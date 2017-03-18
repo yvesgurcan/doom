@@ -196,7 +196,7 @@ boolean F_Responder (event_t *event)
 {
     if (finalestage == 2)
 	return F_CastResponder (event);
-	
+	boolean F_Responder (event_t *event)
     return false;
 }
 
@@ -211,6 +211,7 @@ void F_Ticker (void)
     // check for skipping
     if ( (gamemode == commercial)
       && ( finalecount > 50) )
+void F_TextWrite (void)
     {
       // go on to the next level
       for (i=0 ; i<MAXPLAYERS ; i++)

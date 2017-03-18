@@ -1,0 +1,15 @@
+AM_*    Automap code
+D_*     Initialisation/general code
+F_*     "Finale" (end of game) and "screen melt" code.
+G_*     Main game loop/control
+HU_*    Heads-up display
+I_*     System-specific code
+M_*     Miscellaneous (includes the menu)
+P_*     Game logic/behavior
+R_*     Rendering engine
+S_*     Sound code
+ST_*    Status bar
+V_*     General graphic rendering
+WI_*    End-of level "intermission" screen
+W_*     WAD file loading
+Z_*     Zone memory allocation system

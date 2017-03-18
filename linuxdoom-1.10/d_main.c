@@ -110,8 +110,8 @@ boolean		singletics = false; // debug flag to cancel adaptiveness
 extern  boolean	inhelpscreens;
 
 skill_t		startskill;
-int             startepisode;
-int		startmap;
+int         startepisode;
+int			startmap;
 boolean		autostart;
 
 FILE*		debugfile;
@@ -1046,7 +1046,7 @@ void D_DoomMain (void)
 		    I_Error("\nThis is not the registered version.");
     }
     
-    // Iff additonal PWAD files are used, print modified banner
+    // If additonal PWAD files are used, print modified banner
     if (modifiedgame)
     {
 	/*m*/printf (

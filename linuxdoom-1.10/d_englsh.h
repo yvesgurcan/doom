@@ -38,7 +38,7 @@
 //
 #define PRESSKEY 	"press a key."
 #define PRESSYN 	"press y or n."
-#define QUITMSG	"are you sure you want to\nquit this great game?"
+#define QUITMSG	    "are you sure you want to\nquit this great game?"
 #define LOADNET 	"you can't do load while in a net game!\n\n"PRESSKEY
 #define QLOADNET	"you can't quickload during a netgame!\n\n"PRESSKEY
 #define QSAVESPOT	"you haven't picked a quicksave slot yet!\n\n"PRESSKEY
@@ -479,6 +479,18 @@
 "YOU SEE NO WAY TO DESTROY THE CREATURES'\n"\
 "ENTRYWAY ON THIS SIDE, SO YOU CLENCH YOUR\n"\
 "TEETH AND PLUNGE THROUGH IT.\n"\
+#define HUSTR_27	"NIVEAU 27: CHEZ LES MONSTRES "
+#define HUSTR_28	"NIVEAU 28: LE MONDE DE L'ESPRIT "
+#define HUSTR_29	"NIVEAU 29: LA LIMITE "
+#define HUSTR_30	"NIVEAU 30: L'ICONE DU PECHE "
+
+#define HUSTR_31	"NIVEAU 31: WOLFENSTEIN"
+#define HUSTR_32	"NIVEAU 32: LE MASSACRE"
+
+
+#define HUSTR_CHATMACRO1	"JE SUIS PRET A LEUR EN FAIRE BAVER!"
+#define HUSTR_CHATMACRO2	"JE VAIS BIEN."
+#define HUSTR_CHATMACRO3	"JE N'AI PAS L'AIR EN FORME!
 "\n"\
 "THERE MUST BE A WAY TO CLOSE IT ON THE\n"\
 "OTHER SIDE. WHAT DO YOU CARE IF YOU'VE\n"\
@@ -525,6 +537,18 @@
 
 
 // after map 06	
+#define HUSTR_27	"NIVEAU 27: CHEZ LES MONSTRES "
+#define HUSTR_28	"NIVEAU 28: LE MONDE DE L'ESPRIT "
+#define HUSTR_29	"NIVEAU 29: LA LIMITE "
+#define HUSTR_30	"NIVEAU 30: L'ICONE DU PECHE "
+
+#define HUSTR_31	"NIVEAU 31: WOLFENSTEIN"
+#define HUSTR_32	"NIVEAU 32: LE MASSACRE"
+
+
+#define HUSTR_CHATMACRO1	"JE SUIS PRET A LEUR EN FAIRE BAVER!"
+#define HUSTR_CHATMACRO2	"JE VAIS BIEN."
+#define HUSTR_CHATMACRO3	"JE N'AI PAS L'AIR EN FORME!
 
 #define P1TEXT  \
 "You gloat over the steaming carcass of the\n"\

@@ -1050,7 +1050,7 @@ AM_drawFline
 
 
 //
-// Clip lines, draw visible part sof lines.
+// Clip lines, draw visible parts of lines.
 //
 void
 AM_drawMline

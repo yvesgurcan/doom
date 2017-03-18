@@ -1,0 +1,879 @@
+=== Includes in am_map.c ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in am_map.h ===
+=== Includes in ChangeLog ===
+	* CC=gcc again, this time loads of #includes to
+          #include "doomdef.h"
+          #include "doomstat.h"
+          Added #include "z_zone.h". 
+=== Includes in CVS ===
+=== Includes in d_englsh.h ===
+=== Includes in d_event.h ===
+#include "doomtype.h"
+=== Includes in d_french.h ===
+=== Includes in d_items.c ===
+#include "info.h"
+#include "d_items.h"
+=== Includes in d_items.h ===
+#include "doomdef.h"
+=== Includes in d_main.c ===
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include "doomdef.h"
+#include "doomstat.h"
+#include "dstrings.h"
+#include "sounds.h"
+#include "z_zone.h"
+#include "w_wad.h"
+#include "s_sound.h"
+#include "v_video.h"
+#include "f_finale.h"
+#include "f_wipe.h"
+#include "m_argv.h"
+#include "m_misc.h"
+#include "m_menu.h"
+#include "i_system.h"
+#include "i_sound.h"
+#include "i_video.h"
+#include "g_game.h"
+#include "hu_stuff.h"
+#include "wi_stuff.h"
+#include "st_stuff.h"
+#include "am_map.h"
+#include "p_setup.h"
+#include "r_local.h"
+#include "d_main.h"
+=== Includes in d_main.h ===
+#include "d_event.h"
+=== Includes in d_net.c ===
+#include "m_menu.h"
+#include "i_system.h"
+#include "i_video.h"
+#include "i_net.h"
+#include "g_game.h"
+#include "doomdef.h"
+#include "doomstat.h"
+=== Includes in d_net.h ===
+#include "d_player.h"
+=== Includes in doomdata.h ===
+#include "doomtype.h"
+#include "doomdef.h"
+=== Includes in doomdef.c ===
+#include "doomdef.h"
+=== Includes in doomdef.h ===
+#include <stdio.h>
+#include <string.h>
+//#include "doomtype.h"
+//#include "m_fixed.h"
+//#include "m_swap.h"
+//#include "tables.h"
+//#include "d_event.h"
+//#include "g_game.h"
+//#include "doomdata.h"
+//#include "dstrings.h"
+//#include "d_items.h"
+//#include "d_player.h"
+//#include "p_mobj.h"
+//#include "d_net.h"
+//#include "p_tick.h"
+//#include "sounds.h"
+=== Includes in DOOMLIC.TXT ===
+=== Includes in doomstat.c ===
+#include "doomstat.h"
+=== Includes in doomstat.h ===
+#include "doomdata.h"
+#include "d_net.h"
+#include "d_player.h"
+=== Includes in doomtype.h ===
+#include <values.h>
+=== Includes in d_player.h ===
+#include "d_items.h"
+#include "p_pspr.h"
+#include "p_mobj.h"
+#include "d_ticcmd.h"
+=== Includes in dstrings.c ===
+#include "dstrings.h"
+=== Includes in dstrings.h ===
+#include "d_french.h"
+#include "d_englsh.h"
+=== Includes in d_textur.h ===
+#include "doomtype.h"
+=== Includes in d_think.h ===
+=== Includes in d_ticcmd.h ===
+#include "doomtype.h"
+=== Includes in f_finale.c ===
+#include <ctype.h>
+#include "i_system.h"
+#include "m_swap.h"
+#include "z_zone.h"
+#include "v_video.h"
+#include "w_wad.h"
+#include "s_sound.h"
+#include "dstrings.h"
+#include "sounds.h"
+#include "doomstat.h"
+#include "r_state.h"
+//#include "doomstat.h"
+//#include "r_local.h"
+//#include "f_finale.h"
+#include "hu_stuff.h"
+=== Includes in f_finale.h ===
+#include "doomtype.h"
+#include "d_event.h"
+=== Includes in FILES ===
+=== Includes in FILES2 ===
+=== Includes in f_wipe.c ===
+#include "z_zone.h"
+#include "i_video.h"
+#include "v_video.h"
+#include "m_random.h"
+#include "doomdef.h"
+#include "f_wipe.h"
+=== Includes in f_wipe.h ===
+=== Includes in g_game.c ===
+#include <string.h>
+#include <stdlib.h>
+#include "doomdef.h" 
+#include "doomstat.h"
+#include "z_zone.h"
+#include "f_finale.h"
+#include "m_argv.h"
+#include "m_misc.h"
+#include "m_menu.h"
+#include "m_random.h"
+#include "i_system.h"
+#include "p_setup.h"
+#include "p_saveg.h"
+#include "p_tick.h"
+#include "d_main.h"
+#include "wi_stuff.h"
+#include "hu_stuff.h"
+#include "st_stuff.h"
+#include "am_map.h"
+#include "v_video.h"
+#include "w_wad.h"
+#include "p_local.h" 
+#include "s_sound.h"
+#include "dstrings.h"
+#include "sounds.h"
+#include "r_data.h"
+#include "r_sky.h"
+#include "g_game.h"
+=== Includes in g_game.h ===
+#include "doomdef.h"
+#include "d_event.h"
+=== Includes in hu_lib.c ===
+#include <ctype.h>
+#include "doomdef.h"
+#include "v_video.h"
+#include "m_swap.h"
+#include "hu_lib.h"
+#include "r_local.h"
+#include "r_draw.h"
+=== Includes in hu_lib.h ===
+#include "r_defs.h"
+=== Includes in hu_stuff.c ===
+#include <ctype.h>
+#include "doomdef.h"
+#include "z_zone.h"
+#include "m_swap.h"
+#include "hu_stuff.h"
+#include "hu_lib.h"
+#include "w_wad.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "dstrings.h"
+#include "sounds.h"
+=== Includes in hu_stuff.h ===
+#include "d_event.h"
+=== Includes in i_main.c ===
+#include "doomdef.h"
+#include "m_argv.h"
+#include "d_main.h"
+=== Includes in i_net.c ===
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <errno.h>
+#include <unistd.h>
+#include <netdb.h>
+#include <sys/ioctl.h>
+#include "i_system.h"
+#include "d_event.h"
+#include "d_net.h"
+#include "m_argv.h"
+#include "doomstat.h"
+#include "i_net.h"
+=== Includes in i_net.h ===
+=== Includes in info.c ===
+#include "sounds.h"
+#include "m_fixed.h"
+#include "info.h"
+#include "p_mobj.h"
+=== Includes in info.h ===
+#include "d_think.h"
+=== Includes in i_sound.c ===
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <math.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/filio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/soundcard.h>
+#include <time.h>
+#include <signal.h>
+#include "z_zone.h"
+#include "i_system.h"
+#include "i_sound.h"
+#include "m_argv.h"
+#include "m_misc.h"
+#include "w_wad.h"
+#include "doomdef.h"
+=== Includes in i_sound.h ===
+#include "doomdef.h"
+#include <stdio.h>
+#include "doomstat.h"
+#include "sounds.h"
+=== Includes in i_system.c ===
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include "doomdef.h"
+#include "m_misc.h"
+#include "i_video.h"
+#include "i_sound.h"
+#include "d_net.h"
+#include "g_game.h"
+#include "i_system.h"
+=== Includes in i_system.h ===
+#include "d_ticcmd.h"
+#include "d_event.h"
+=== Includes in i_video.c ===
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
+#include <X11/extensions/XShm.h>
+#include <stdarg.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <errnos.h>
+#include <signal.h>
+#include "doomstat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "m_argv.h"
+#include "d_main.h"
+#include "doomdef.h"
+=== Includes in i_video.h ===
+#include "doomtype.h"
+=== Includes in Makefile ===
+=== Includes in m_argv.c ===
+#include <string.h>
+=== Includes in m_argv.h ===
+=== Includes in m_bbox.c ===
+#include "m_bbox.h"
+=== Includes in m_bbox.h ===
+#include <values.h>
+#include "m_fixed.h"
+=== Includes in m_cheat.c ===
+#include "m_cheat.h"
+=== Includes in m_cheat.h ===
+=== Includes in m_fixed.c ===
+#include "stdlib.h"
+#include "doomtype.h"
+#include "i_system.h"
+#include "m_fixed.h"
+=== Includes in m_fixed.h ===
+=== Includes in m_menu.c ===
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include "doomdef.h"
+#include "dstrings.h"
+#include "d_main.h"
+#include "i_system.h"
+#include "i_video.h"
+#include "z_zone.h"
+#include "v_video.h"
+#include "w_wad.h"
+#include "r_local.h"
+#include "hu_stuff.h"
+#include "g_game.h"
+#include "m_argv.h"
+#include "m_swap.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "sounds.h"
+#include "m_menu.h"
+=== Includes in m_menu.h ===
+#include "d_event.h"
+=== Includes in m_misc.c ===
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <ctype.h>
+#include "doomdef.h"
+#include "z_zone.h"
+#include "m_swap.h"
+#include "m_argv.h"
+#include "w_wad.h"
+#include "i_system.h"
+#include "i_video.h"
+#include "v_video.h"
+#include "hu_stuff.h"
+#include "doomstat.h"
+#include "dstrings.h"
+#include "m_misc.h"
+=== Includes in m_misc.h ===
+#include "doomtype.h"
+=== Includes in m_random.c ===
+=== Includes in m_random.h ===
+#include "doomtype.h"
+=== Includes in m_swap.c ===
+#include "m_swap.h"
+=== Includes in m_swap.h ===
+=== Includes in p_ceilng.c ===
+#include "z_zone.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "sounds.h"
+=== Includes in p_doors.c ===
+#include "z_zone.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "sounds.h"
+=== Includes in p_enemy.c ===
+#include <stdlib.h>
+#include "m_random.h"
+#include "i_system.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "g_game.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "sounds.h"
+=== Includes in p_floor.c ===
+#include "z_zone.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "sounds.h"
+=== Includes in p_inter.c ===
+#include "doomdef.h"
+#include "dstrings.h"
+#include "sounds.h"
+#include "doomstat.h"
+#include "m_random.h"
+#include "i_system.h"
+#include "am_map.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "p_inter.h"
+=== Includes in p_inter.h ===
+=== Includes in p_lights.c ===
+#include "z_zone.h"
+#include "m_random.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "r_state.h"
+=== Includes in p_local.h ===
+#include "r_local.h"
+#include "p_spec.h"
+=== Includes in p_map.c ===
+#include <stdlib.h>
+#include "m_bbox.h"
+#include "m_random.h"
+#include "i_system.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "sounds.h"
+=== Includes in p_maputl.c ===
+#include <stdlib.h>
+#include "m_bbox.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "r_state.h"
+=== Includes in p_mobj.c ===
+#include "i_system.h"
+#include "z_zone.h"
+#include "m_random.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "sounds.h"
+#include "st_stuff.h"
+#include "hu_stuff.h"
+#include "s_sound.h"
+#include "doomstat.h"
+=== Includes in p_mobj.h ===
+#include "tables.h"
+#include "m_fixed.h"
+#include "d_think.h"
+#include "doomdata.h"
+#include "info.h"
+=== Includes in p_plats.c ===
+#include "i_system.h"
+#include "z_zone.h"
+#include "m_random.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "sounds.h"
+=== Includes in p_pspr.c ===
+#include "doomdef.h"
+#include "d_event.h"
+#include "m_random.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "sounds.h"
+#include "p_pspr.h"
+=== Includes in p_pspr.h ===
+#include "m_fixed.h"
+#include "tables.h"
+#include "info.h"
+=== Includes in p_saveg.c ===
+#include "i_system.h"
+#include "z_zone.h"
+#include "p_local.h"
+#include "doomstat.h"
+#include "r_state.h"
+=== Includes in p_saveg.h ===
+=== Includes in p_setup.c ===
+#include <math.h>
+#include "z_zone.h"
+#include "m_swap.h"
+#include "m_bbox.h"
+#include "g_game.h"
+#include "i_system.h"
+#include "w_wad.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+=== Includes in p_setup.h ===
+=== Includes in p_sight.c ===
+#include "doomdef.h"
+#include "i_system.h"
+#include "p_local.h"
+#include "r_state.h"
+=== Includes in p_spec.c ===
+#include <stdlib.h>
+#include "doomdef.h"
+#include "doomstat.h"
+#include "i_system.h"
+#include "z_zone.h"
+#include "m_argv.h"
+#include "m_random.h"
+#include "w_wad.h"
+#include "r_local.h"
+#include "p_local.h"
+#include "g_game.h"
+#include "s_sound.h"
+#include "r_state.h"
+#include "sounds.h"
+=== Includes in p_spec.h ===
+=== Includes in p_switch.c ===
+#include "i_system.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "g_game.h"
+#include "s_sound.h"
+#include "sounds.h"
+#include "doomstat.h"
+#include "r_state.h"
+=== Includes in p_telept.c ===
+#include "doomdef.h"
+#include "s_sound.h"
+#include "p_local.h"
+#include "sounds.h"
+#include "r_state.h"
+=== Includes in p_tick.c ===
+#include "z_zone.h"
+#include "p_local.h"
+#include "doomstat.h"
+=== Includes in p_tick.h ===
+=== Includes in p_user.c ===
+#include "doomdef.h"
+#include "d_event.h"
+#include "p_local.h"
+#include "doomstat.h"
+=== Includes in r_bsp.c ===
+#include "doomdef.h"
+#include "m_bbox.h"
+#include "i_system.h"
+#include "r_main.h"
+#include "r_plane.h"
+#include "r_things.h"
+#include "doomstat.h"
+#include "r_state.h"
+//#include "r_local.h"
+=== Includes in r_bsp.h ===
+=== Includes in r_data.c ===
+#include "i_system.h"
+#include "z_zone.h"
+#include "m_swap.h"
+#include "w_wad.h"
+#include "doomdef.h"
+#include "r_local.h"
+#include "p_local.h"
+#include "doomstat.h"
+#include "r_sky.h"
+#include  <alloca.h>
+#include "r_data.h"
+=== Includes in r_data.h ===
+#include "r_defs.h"
+#include "r_state.h"
+=== Includes in r_defs.h ===
+#include "doomdef.h"
+#include "m_fixed.h"
+#include "d_think.h"
+#include "p_mobj.h"
+=== Includes in r_draw.c ===
+#include "doomdef.h"
+#include "i_system.h"
+#include "z_zone.h"
+#include "w_wad.h"
+#include "r_local.h"
+#include "v_video.h"
+#include "doomstat.h"
+=== Includes in r_draw.h ===
+=== Includes in README.asm ===
+=== Includes in README.b ===
+=== Includes in README.book ===
+=== Includes in README.gl ===
+=== Includes in README.sound ===
+=== Includes in r_local.h ===
+#include "tables.h"
+#include "doomdef.h"
+#include "r_data.h"
+#include "r_main.h"
+#include "r_bsp.h"
+#include "r_segs.h"
+#include "r_plane.h"
+#include "r_data.h"
+#include "r_things.h"
+#include "r_draw.h"
+=== Includes in r_main.c ===
+#include <stdlib.h>
+#include <math.h>
+#include "doomdef.h"
+#include "d_net.h"
+#include "m_bbox.h"
+#include "r_local.h"
+#include "r_sky.h"
+=== Includes in r_main.h ===
+#include "d_player.h"
+#include "r_data.h"
+=== Includes in r_plane.c ===
+#include <stdlib.h>
+#include "i_system.h"
+#include "z_zone.h"
+#include "w_wad.h"
+#include "doomdef.h"
+#include "doomstat.h"
+#include "r_local.h"
+#include "r_sky.h"
+=== Includes in r_plane.h ===
+#include "r_data.h"
+=== Includes in r_segs.c ===
+#include <stdlib.h>
+#include "i_system.h"
+#include "doomdef.h"
+#include "doomstat.h"
+#include "r_local.h"
+#include "r_sky.h"
+=== Includes in r_segs.h ===
+=== Includes in r_sky.c ===
+#include "m_fixed.h"
+#include "r_data.h"
+#include "r_sky.h"
+=== Includes in r_sky.h ===
+=== Includes in r_state.h ===
+#include "d_player.h"
+#include "r_data.h"
+=== Includes in r_things.c ===
+#include <stdio.h>
+#include <stdlib.h>
+#include "doomdef.h"
+#include "m_swap.h"
+#include "i_system.h"
+#include "z_zone.h"
+#include "w_wad.h"
+#include "r_local.h"
+#include "doomstat.h"
+=== Includes in r_things.h ===
+=== Includes in sounds.c ===
+#include "doomtype.h"
+#include "sounds.h"
+=== Includes in sounds.h ===
+=== Includes in s_sound.c ===
+#include <stdio.h>
+#include <stdlib.h>
+#include "i_system.h"
+#include "i_sound.h"
+#include "sounds.h"
+#include "s_sound.h"
+#include "z_zone.h"
+#include "m_random.h"
+#include "w_wad.h"
+#include "doomdef.h"
+#include "p_local.h"
+#include "doomstat.h"
+=== Includes in s_sound.h ===
+=== Includes in st_lib.c ===
+#include <ctype.h>
+#include "doomdef.h"
+#include "z_zone.h"
+#include "v_video.h"
+#include "m_swap.h"
+#include "i_system.h"
+#include "w_wad.h"
+#include "st_stuff.h"
+#include "st_lib.h"
+#include "r_local.h"
+=== Includes in st_lib.h ===
+#include "r_defs.h"
+=== Includes in st_stuff.c ===
+#include <stdio.h>
+#include "i_system.h"
+#include "i_video.h"
+#include "z_zone.h"
+#include "m_random.h"
+#include "w_wad.h"
+#include "doomdef.h"
+#include "g_game.h"
+#include "st_stuff.h"
+#include "st_lib.h"
+#include "r_local.h"
+#include "p_local.h"
+#include "p_inter.h"
+#include "am_map.h"
+#include "m_cheat.h"
+#include "s_sound.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "dstrings.h"
+#include "sounds.h"
+=== Includes in st_stuff.h ===
+#include "doomtype.h"
+#include "d_event.h"
+=== Includes in tables.c ===
+#include "tables.h"
+=== Includes in tables.h ===
+#include <math.h>
+#include "m_fixed.h"
+=== Includes in TODO ===
+=== Includes in v_video.c ===
+#include "i_system.h"
+#include "r_local.h"
+#include "doomdef.h"
+#include "doomdata.h"
+#include "m_bbox.h"
+#include "m_swap.h"
+#include "v_video.h"
+=== Includes in v_video.h ===
+#include "doomtype.h"
+#include "doomdef.h"
+#include "r_data.h"
+=== Includes in wi_stuff.c ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "m_random.h"
+#include "m_swap.h"
+#include "i_system.h"
+#include "w_wad.h"
+#include "g_game.h"
+#include "r_local.h"
+#include "s_sound.h"
+#include "doomstat.h"
+#include "sounds.h"
+#include "v_video.h"
+#include "wi_stuff.h"
+=== Includes in wi_stuff.h ===
+//#include "v_video.h"
+#include "doomdef.h"
+=== Includes in w_wad.c ===
+#include <ctype.h>
+#include <sys/types.h>
+#include <string.h>
+#include <unistd.h>
+#include <malloc.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <alloca.h>
+#include "doomtype.h"
+#include "m_swap.h"
+#include "i_system.h"
+#include "z_zone.h"
+#include "w_wad.h"
+=== Includes in w_wad.h ===
+=== Includes in z_zone.c ===
+#include "z_zone.h"
+#include "i_system.h"
+#include "doomdef.h"
+=== Includes in z_zone.h ===
+#include <stdio.h>
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in z_zone.h ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in z_zone.h ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in z_zone.h ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in  ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in  ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in am_map.c ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
+=== Includes in am_map.c ===
+=== Includes in am_map.c ===
+#include <stdio.h>
+#include "z_zone.h"
+#include "doomdef.h"
+#include "st_stuff.h"
+#include "p_local.h"
+#include "w_wad.h"
+#include "m_cheat.h"
+#include "i_system.h"
+#include "v_video.h"
+#include "doomstat.h"
+#include "r_state.h"
+#include "dstrings.h"
+#include "am_map.h"
