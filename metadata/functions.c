@@ -46,6 +46,28 @@
                 void        AM_drawCrosshair (int color);
                             // Called by main loop (called instead of view drawer if automap active).
                 void        AM_Drawer (void);
+// d_main.c                 EVENT HANDLING
+                            // Called by the I/O functions when input is detected
+                void        D_PostEvent (event_t* ev);
+                            // Send all the events of the given timestamp down the responder chain
+                void        D_ProcessEvents (void);
+                            // draw current display, possibly wiping it from the previous
+                void        D_Display (void);
+                void        D_DoomLoop (void);
+                            // Handles timing for warped projection
+                void        D_PageTicker (void);
+                void        D_PageDrawer (void);
+                            // Called after each demo or intro demosequence finishes
+                void        D_AdvanceDemo (void);
+                            // Cycles through the demo sequences.
+                void        D_DoAdvanceDemo (void);
+                            // The title screen shown when the game is started
+                void        D_StartTitle (void);
+                void        D_AddFile (char *file);
+                            // Checks availability of IWAD files by name to determine whether registered/commercial features should be executed (notably loading PWADs).
+                void        IdentifyVersion (void);
+                void        FindResponseFile (void);
+                void        D_DoomMain (void);
 // d_net.c
                 int         NetbufferSize (void);
                 unsigned    NetbufferChecksum (void);
@@ -75,7 +97,16 @@
                 void        F_DrawPatchCol (int x, patch_t* patch, int col);
                 void        F_BunnyScroll (void);
                 void        F_Drawer (void);
-
+// f_wipe.c
+                void        wipe_shittyColMajorXform (short* array, int width, int height);
+                int         wipe_initColorXForm (int width, int	height, int ticks);
+                int         wipe_doColorXForm (int width, int height, int ticks);
+                int         wipe_exitColorXForm (int width, int height, int ticks);
+                int         wipe_initMelt (int width, int height, int ticks);
+                int         wipe_doMelt (int width, int height, int ticks);
+                int         wipe_exitMelt (int width, int height, int ticks);
+                int         wipe_StartScreen (int x, int y, int width, int height);
+                int         wipe_ScreenWipe (int wipeno, int x, int y, int width, int height, int ticks);
 // g_game.c                 GAME LOOP FUNCTIONS, EVENT HANDLING ETC.
                 boolean    boolean  emoStatus (void);
                 void        G_ReadDemoTiccmd (ticcmd_t *cmd); 
@@ -91,29 +122,62 @@
                 void        G_DoVictory (void); 
                 void        G_DoWorldDone (void); 
                 void        G_DoSaveGame (void); 
-
-// d_main.c                 EVENT HANDLING
-                            // Called by the I/O functions when input is detected
-                void        D_PostEvent (event_t* ev);
-                            // Send all the events of the given timestamp down the responder chain
-                void        D_ProcessEvents (void);
-                            // draw current display, possibly wiping it from the previous
-                void        D_Display (void);
-                void        D_DoomLoop (void);
-                            // Handles timing for warped projection
-                void        D_PageTicker (void);
-                void        D_PageDrawer (void);
-                            // Called after each demo or intro demosequence finishes
-                void        D_AdvanceDemo (void);
-                            // Cycles through the demo sequences.
-                void        D_DoAdvanceDemo (void);
-                            // The title screen shown when the game is started
-                void        D_StartTitle (void);
-                void        D_AddFile (char *file);
-                            // Checks availability of IWAD files by name to determine whether registered/commercial features should be executed (notably loading PWADs).
-                void        IdentifyVersion (void);
-                void        FindResponseFile (void);
-                void        D_DoomMain (void);
+// hu_lib.c
+                            // this function is empty
+                void        HUlib_init (void);
+                void        HUlib_clearTextLine (hu_textline_t* t);
+                void        HUlib_initTextLine (hu_textline_t* t, int x, int y,patch_t** f, int sc);
+                boolean     HUlib_addCharToTextLine (hu_textline_t* t, char ch);
+                boolean     HUlib_delCharFromTextLine(hu_textline_t* t);
+                void        HUlib_drawTextLine (hu_textline_t* l, boolean drawcursor);
+                void        HUlib_eraseTextLine (hu_textline_t* l);
+                void        HUlib_initSText (hu_stext_t* s, int x, int y, int h, patch_t** font, int startchar, boolean* on);
+                void        HUlib_addLineToSText(hu_stext_t* s);
+                void        HUlib_addMessageToSText (hu_stext_t* s, char* prefix, char* msg);
+                void        HUlib_drawSText (hu_stext_t* s);
+                void        HUlib_eraseSText (hu_stext_t* s);
+                void        HUlib_initIText (hu_itext_t* it, int x, int y, patch_t** font, int startchar, boolean* on);
+                void        HUlib_delCharFromIText(hu_itext_t* it);
+                void        HUlib_eraseLineFromIText (hu_itext_t* it);
+                void        HUlib_resetIText (hu_itext_t* it);
+                void        HUlib_addPrefixToIText (hu_itext_t* it, char* str);
+                boolean     HUlib_keyInIText (hu_itext_t* it, unsigned char ch);
+                void        HUlib_drawIText (hu_itext_t* it);
+                void        HUlib_eraseIText(hu_itext_t* it);
+// hu_stuff.c
+                void        HU_Stop (void);
+                void        HU_Start (void);
+                void        HU_Drawer (void);
+                void        HU_Erase (void);
+                void        HU_Ticker (void);
+                void        HU_queueChatChar (char c);
+                char        HU_dequeueChatChar (void);
+                boolean     HU_Responder(event_t *ev);
 
 // i_main.c
                 int         main (int argc, char** argv);
+// i_net.c
+
+
+
+
+
+
+
+
+
+// z_zone.c
+                void        Z_ClearZone (memzone_t* zone);
+                void        Z_Init (void);
+                void        Z_Free (void* ptr);
+                void*       Z_Malloc (int size, int tag, void* user);
+                void        Z_FreeTags (int lowtag, int hightag);
+                void        Z_DumpHeap (int lowtag, int hightag);
+                void        Z_FileDumpHeap (FILE* f);
+                void        Z_CheckHeap (void);
+                void        Z_ChangeTag2 (void* ptr, int tag);
+                int         Z_FreeMemory (void);
+
+
+// z_zone.h
+                #define     Z_ChangeTag (p,t)

@@ -1,5 +1,6 @@
 // STRING SEARCH
-
+// parses 1 file ($file) and saves the occurrences of $string in $savefile
+file="d_main.h"; string="D_DoomMain"; echo "=== $string in $file ==="; cat $file | grep $string
 
 // INCLUDES
 // parses all the files in the current folder and saves the occurrences of "#include" in ../metadata/includes
