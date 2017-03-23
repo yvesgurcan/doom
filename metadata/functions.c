@@ -153,11 +153,113 @@
                 void        HU_queueChatChar (char c);
                 char        HU_dequeueChatChar (void);
                 boolean     HU_Responder(event_t *ev);
+// hu_stuff.h
+
 
 // i_main.c
                 int         main (int argc, char** argv);
 // i_net.c
-
+                int         UDPsocket (void);
+                void        BindToLocalPort (int s, int port);
+                void        PacketSend (void);
+                void        PacketGet (void);
+                int         GetLocalAddress (void);
+                void        I_InitNetwork (void);
+                void        I_NetCmd (void);
+// i_sound.c
+                void        myioctl (int fd, int command, int* arg);
+                void*       getsfx (char* sfxname, int* len);
+                int         addsfx (int sfxid, int volume, int step, int seperation);
+                            // SFX API
+                void        I_SetChannels();
+                void        I_SetSfxVolume(int volume);
+                            // MUSIC API - dummy. Some code from DOS version.
+                void        I_SetMusicVolume(int volume);
+                            // Retrieve the raw data lump index for a given SFX name.
+                int         I_GetSfxLumpNum(sfxinfo_t* sfx);
+                int         I_StartSound (int id int vol, int sep, int pitch, int priority);
+                void        I_StopSound (int handle);
+                int         I_SoundIsPlaying (int handle);
+                void        I_UpdateSound (void);
+                void        I_SubmitSound (void);
+                void        I_UpdateSoundParams (int handle, int vol, int sep, int pitch);
+                void        I_ShutdownSound (void);
+                void        I_InitSound();
+                            // Music API. Dummies.
+                void        I_InitMusic(void) { };
+                void        I_ShutdownMusic(void) { };
+                void        I_PlaySong (int handle, int looping);
+                void        I_PauseSong (int handle);
+                void        I_ResumeSong (int handle);
+                void        I_StopSong(int handle);
+                void        I_UnRegisterSong(int handle);
+                int         I_RegisterSong(void* data);
+                            // Is the song playing?
+                int         I_QrySongPlaying(int handle);
+                            // Interrupt handler.
+                void        I_HandleSoundTimer (int ignore);
+                            // Get the interrupt. Set duration in millisecs.
+                int         I_SoundSetTimer (int duration_of_tick);
+                            // Remove the interrupt. Set duration to zero.
+                void        I_SoundDelTimer (void);       
+// i_system.c               SYSTEM SPECIFIC INTERFACE STUFF.
+                            // Unused
+                void        I_Tactile (int on, int off, int total);
+                ticcmd_t*	I_BaseTiccmd (void);
+                int         I_GetHeapSize (void);
+                byte*       I_ZoneBase (int* size);
+                            // returns time in 1/70th second tics
+                int         I_GetTime (void);
+                void        I_Init (void);
+                void        I_Quit (void);
+                void        I_WaitVBL(int count);
+                void        I_BeginRead(void);
+                void        I_EndRead(void);
+                byte*       I_AllocLow(int length);
+                void        I_Error (char *error, ...);
+// i_video.c                DOOM graphics stuff for X11, UNIX.
+                            //  Translates the key currently in X_event
+                int         xlatekey(void);
+                void        I_ShutdownGraphics(void);
+                            // Empty!
+                void        I_StartFrame (void);
+                void        I_GetEvent(void);
+                Cursor      createnullcursor (Display* display, Window root);
+                void        I_StartTic (void);
+                void        I_UpdateNoBlit (void);
+                void        I_FinishUpdate (void);
+                void        I_ReadScreen (byte* scr);
+                void        UploadNewPalette(Colormap cmap, byte *palette);
+                void        I_SetPalette (byte* palette);
+                void        grabsharedmemory(int size);
+                void        I_InitGraphics(void);
+                void        InitExpand (void);
+                void        InitExpand2 (void);
+                void        Expand4 (unsigned* lineptr, double* xline);
+// info.c                   DEFINITION OF THINGS
+// m_argv.c                 
+                int         M_CheckParm (char *check);
+// m_bbox.c                 
+                void        M_ClearBox (fixed_t *box);
+                void        M_AddToBox (fixed_t*box, fixed_t x, fixed_t y);
+// m_cheat.c                CHEAT SEQUENCE CHECKING
+                            // Called in st_stuff module, which handles the input. Returns 1 if the cheat was successful, 0 if failed.
+                int         cht_CheckCheat (cheatseq_t* cht, char key);
+                void        cht_GetParam (cheatseq_t* cht, char* buffer);
+// m_fixed.c
+                fixed_t     FixedMul (fixed_t a, fixed_t b);
+                fixed_t     FixedDiv (fixed_t a, fixed_t b);
+                fixed_t     FixedDiv2 (fixed_t a, fixed_t b);
+// m_menu.c                 SELECTION MENU, OPTIONS, EPISODES, SLICES, ICONS, ...
+                            // Read the strings from the savegame files
+                void        M_ReadSaveStrings(void);
+                void        M_DrawLoad(void);
+                            // Draw border for the savegame description 
+                void        M_DrawSaveLoadBorder(int x,int y);
+                            // User wants to load this game
+                void        M_LoadSelect(int choice);
+                            // Selected from DOOM menu
+                void        M_LoadGame (int choice)
 
 
 
