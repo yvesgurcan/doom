@@ -895,6 +895,7 @@ void M_DrawEpisode(void)
     V_DrawPatchDirect (54,38,0,W_CacheLumpName("M_EPISOD",PU_CACHE));
 }
 
+// Probably after user has confirmed they want to choose nightmare
 void M_VerifyNightmare(int ch)
 {
     if (ch != 'y')
@@ -1076,9 +1077,10 @@ int     quitsounds2[8] =
 };
 
 
-
+// Registers user's response when prompted if they really want to quit + play quit sound
 void M_QuitResponse(int ch)
 {
+    // if user has not pressed "y", then go back
     if (ch != 'y')
 	return;
     if (!netgame)
@@ -1109,7 +1111,7 @@ void M_QuitDOOM(int choice)
 
 
 
-
+// Mouse sensitivity
 void M_ChangeSensitivity(int choice)
 {
     switch(choice)
@@ -1190,15 +1192,19 @@ M_DrawThermo
     int		i;
 
     xx = x;
+    // left part of the "thermo"
     V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERML",PU_CACHE));
     xx += 8;
+    // middle of the "thermo"
     for (i=0;i<thermWidth;i++)
     {
 	V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMM",PU_CACHE));
 	xx += 8;
     }
+    // right of the "thermo"
     V_DrawPatchDirect (xx,y,0,W_CacheLumpName("M_THERMR",PU_CACHE));
 
+    // slider
     V_DrawPatchDirect ((x+8) + thermDot*8,y,
 		       0,W_CacheLumpName("M_THERMO",PU_CACHE));
 }
@@ -1357,8 +1363,10 @@ boolean M_Responder (event_t* ev)
     static  int     mousex = 0;
     static  int     lastx = 0;
 	
+    // if ch is not modified, returns false
     ch = -1;
 	
+    // Sets value of ch based on ev (we are talking about keyboard keys such as down arrow and enter)
     if (ev->type == ev_joystick && joywait < I_GetTime())
     {
 	if (ev->data3 == -1)
@@ -1492,6 +1500,7 @@ boolean M_Responder (event_t* ev)
     }
     
     // Take care of any messages that need input
+    // Listens to key strokes for messages that ask confirmation
     if (messageToPrint)
     {
 	if (messageNeedsInput == true &&
@@ -1605,7 +1614,7 @@ boolean M_Responder (event_t* ev)
 	}
 
     
-    // Pop-up menu?
+    // Pop-up menu
     if (!menuactive)
     {
 	if (ch == KEY_ESCAPE)
@@ -1808,6 +1817,7 @@ void M_Drawer (void)
 //
 // M_ClearMenus
 //
+// Sets menuactive to zero
 void M_ClearMenus (void)
 {
     menuactive = 0;
@@ -1844,6 +1854,7 @@ void M_Ticker (void)
 //
 // M_Init
 //
+// 
 void M_Init (void)
 {
     currentMenu = &MainDef;
@@ -1890,4 +1901,3 @@ void M_Init (void)
     }
     
 }
-

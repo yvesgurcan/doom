@@ -153,9 +153,6 @@
                 void        HU_queueChatChar (char c);
                 char        HU_dequeueChatChar (void);
                 boolean     HU_Responder(event_t *ev);
-// hu_stuff.h
-
-
 // i_main.c
                 int         main (int argc, char** argv);
 // i_net.c
@@ -259,13 +256,84 @@
                             // User wants to load this game
                 void        M_LoadSelect(int choice);
                             // Selected from DOOM menu
-                void        M_LoadGame (int choice)
-
-
-
-
-
-
+                void        M_LoadGame (int choice);
+                void        M_DrawSave(void);
+                            // M_Responder calls this when user is finished
+                void        M_DoSave(int slot);
+                            // User wants to save. Start string input for M_Responder
+                void        M_SaveSelect(int choice);
+                            // Selected from DOOM menu
+                void        M_SaveGame (int choice);
+                void        M_QuickSaveResponse(int ch);
+                void        M_QuickSave(void);
+                void        M_QuickLoadResponse(int ch);
+                void        M_QuickLoad(void);
+                void        M_DrawReadThis1(void);
+                void        M_DrawReadThis2(void);
+                            // Change Sfx & Music volumes
+                void        M_DrawSound(void);
+                void        M_Sound(int choice);
+                void        M_SfxVol(int choice);
+                void        M_MusicVol(int choice);
+                void        M_DrawMainMenu(void);
+                void        M_DrawNewGame(void);
+                void        M_NewGame(int choice);
+                void        M_DrawEpisode(void);
+                            // Probably after user has confirmed they want to choose nightmare
+                void        M_VerifyNightmare(int ch);
+                void        M_ChooseSkill(int choice);
+                void        M_Episode(int choice);
+                void        M_DrawOptions(void);
+                void        M_Options(int choice);
+                void        M_ChangeMessages(int choice);
+                void        M_EndGameResponse(int ch);
+                void        M_EndGame(int choice);
+                void        M_ReadThis(int choice);
+                void        M_ReadThis2(int choice);
+                void        M_FinishReadThis(int choice);
+                            // Registers user's response when prompted if they really want to quit + play quit sound
+                void        M_QuitResponse(int ch);
+                void        M_QuitDOOM(int choice);
+                            // Mouse sensitivity
+                void        M_ChangeSensitivity(int choice);
+                void        M_ChangeDetail(int choice);
+                void        M_SizeDisplay(int choice);
+                            // Menu functions
+                void        M_DrawThermo (int x, int y, int thermWidth, int thermDot);
+                void        M_DrawEmptyCell (menu_t* menu, int item);
+                void        M_DrawSelCell (menu_t* menu, int item);
+                void        M_StartMessage (char* string, void* routine, boolean input);
+                void        M_StopMessage(void);
+                            // Find string width from hu_font chars
+                int         M_StringWidth(char* string);
+                            // Find string height from hu_font chars
+                int         M_StringHeight(char* string);
+                            // Write a string using the hu_font
+                void        M_WriteText (int x, int y, char* string);
+                            // Sets value of ch based on ev (we are talking about keyboard keys such as down arrow and enter)
+                            // Listens to key strokes for messages that ask confirmation
+                            // Opens the menu, menu navigation, take screenshots, screen size, etc.
+                            // Called by main loop,
+                            // saves config file and calls I_Quit when user exits.
+                            // Even when the menu is not displayed,
+                            // this can resize the view and change game parameters.
+                            // Does all the real work of the menu interaction.
+                boolean     M_Responder (event_t* ev);
+                            // Called by intro code to force menu up upon a keypress
+                void        M_StartControlPanel (void);
+                            // Called by main loop
+                            // Draws the menus directly into the screen buffer.
+                void        M_Drawer (void);
+                            // Sets menuactive to zero
+                void        M_ClearMenus (void);
+                void        M_SetupNextMenu(menu_t *menudef);
+                            // Only used for menu (skull cursor) animation.
+                void        M_Ticker (void);
+                            // Called by D_DoomMain
+                            // Loads the config file.
+                void        M_Init (void);
+// m_misc.c
+                
 
 
 // z_zone.c
