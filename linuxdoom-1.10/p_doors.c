@@ -220,9 +220,10 @@ EV_DoLockedDoor
     {
       case 99:	// Blue Lock
       case 133:
-	if ( !p )
+	if ( !p ) // do not open if it is not the player
 	    return 0;
 	if (!p->cards[it_bluecard] && !p->cards[it_blueskull])
+	// do not open if player does not have the blue card
 	{
 	    p->message = PD_BLUEO;
 	    S_StartSound(NULL,sfx_oof);
@@ -295,8 +296,8 @@ EV_DoDoor
 	{
 	  case blazeClose:
 	    door->topheight = P_FindLowestCeilingSurrounding(sec);
-	    door->topheight -= 4*FRACUNIT;
-	    door->direction = -1;
+	    door->topheight -= 4*FRACUNIT; // the ceiling moves up to the next lowest ceiling minus 4 units
+	    door->direction = -1; // I guess -1 means up
 	    door->speed = VDOORSPEED * 4;
 	    S_StartSound((mobj_t *)&door->sector->soundorg,
 			 sfx_bdcls);
@@ -428,7 +429,7 @@ EV_VerticalDoor
 	    else
 	    {
 		if (!thing->player)
-		    return;		// JDC: bad guys never close doors
+		    return;		// JDC: bad guys (monsters) never close doors
 		
 		door->direction = -1;	// start going down immediately
 	    }

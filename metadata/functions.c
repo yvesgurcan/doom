@@ -333,9 +333,91 @@
                             // Loads the config file.
                 void        M_Init (void);
 // m_misc.c
-                
+                            // Returns the final X coordinate
+                int         M_DrawText (int x, int y, boolean direct, char* string);            
+                boolean     M_WriteFile (char const* name, void* source, int length);
+                int         M_ReadFile (char const* name, byte** buffer);
+                void        M_SaveDefaults (void);
+                void        M_LoadDefaults (void);
+                            // Creates an image file (for screenshots)
+                void        WritePCXfile (char*	filename, byte*	data, int width, int height, byte* palette);
+                void        M_ScreenShot (void);
 
-
+// m_random.c
+                            // Both these functions look at an array with pseudo-random numbers between 0 and 255
+                            // The function returns one of the numbers in the array 
+                int         P_Random (void);
+                            // M_Random and P_Random do the same but P_Random is used only by the play simulation.
+                int         M_Random (void);
+                            // This function resets the index to 0
+                            // Fix randoms for demos
+                void        M_ClearRandom (void);
+// m_swap.c
+                            // Swap 16bit, that is, MSB and LSB byte.
+                unsigned short  SwapSHORT (unsigned short x);
+                            // Swapping 32bit.
+                unsigned long SwapLONG (unsigned long x);
+// p_ceilng.c
+                void        T_MoveCeiling (ceiling_t* ceiling);
+                            // Move a ceiling up/down and all around!
+                int         EV_DoCeiling (line_t* line, ceiling_e type);
+                            // Add an active ceiling
+                void        P_AddActiveCeiling (ceiling_t* c);
+                            // Remove a ceiling's thinker
+                void        P_RemoveActiveCeiling(ceiling_t* c);
+                            // Restart a ceiling that's in-stasis
+                void        P_ActivateInStasisCeiling(line_t* line);
+                            // Stop a ceiling from crushing!
+                int         EV_CeilingCrushStop(line_t *line);
+// p_doors.c
+                void        T_VerticalDoor (vldoor_t* door);
+                            // Move a locked door up/down
+                int         EV_DoLockedDoor (line_t* line, vldoor_e type, mobj_t* thing);
+                int         EV_DoDoor (line_t* line, vldoor_e type);
+                            // Opens a door manually, no tag value
+                void        EV_VerticalDoor (line_t* line, mobj_t* thing);
+                            // Spawn a door that closes after 30 seconds
+                void        P_SpawnDoorCloseIn30 (sector_t* sec);
+                void        P_SpawnDoorRaiseIn5Mins (sector_t* sec, int secnum);
+// p_enemy.c
+                void        A_Fall (mobj_t *actor);
+                            // Called by P_NoiseAlert.
+                            // Recursively traverse adjacent sectors,
+                            // sound blocking lines cut off traversal.
+                void        P_RecursiveSound (sector_t* sec, int soundblocks);
+                void        P_NoiseAlert (mobj_t* target, mobj_t* emmiter);
+                boolean     P_CheckMeleeRange (mobj_t* actor);
+                boolean     P_CheckMissileRange (mobj_t* actor);
+                boolean     P_Move (mobj_t* actor);
+                boolean     P_TryWalk (mobj_t* actor);
+                void        P_NewChaseDir (mobj_t* actor);
+                boolean     P_LookForPlayers (mobj_t* actor, boolean allaround);
+                            // Check if all the Keen Commander objects are dead
+                void        A_KeenDie (mobj_t* mo);
+                            // Sleep/Awake state of monsters
+                void        A_Look (mobj_t* actor);
+                            // Actor has a melee attack,
+                            // so it tries to close as fast as possible
+                void        A_Chase (mobj_t*	actor);
+                void        A_FaceTarget (mobj_t* actor);
+                            // zombie guy (aka Possessed) attack
+                void        A_PosAttack (mobj_t* actor);
+                            // sargent attack
+                void        A_SPosAttack (mobj_t* actor);
+                            // chaingunner attack
+                void        A_CPosAttack (mobj_t* actor);
+                            // chaingunners keep firing unless target got out of sight
+                void        A_CPosRefire (mobj_t* actor);
+                            // mastermind keeps firing unless target got out of sight
+                void        A_SpidRefire (mobj_t* actor);
+                            // arachnotron (aka baby spider) attack
+                void        A_BspiAttack (mobj_t *actor);
+                            // imp attack
+                void        A_TroopAttack (mobj_t* actor);
+                            // demon attack
+                void        A_SargAttack (mobj_t* actor);
+                            // cacodemon attack
+                void        A_HeadAttack (mobj_t* actor);
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
                 void        Z_Init (void);
