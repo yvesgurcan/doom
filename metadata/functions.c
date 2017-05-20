@@ -438,6 +438,12 @@
                 void        A_VileStart (mobj_t* actor)
                             // start archvile fire
                 void        A_StartFire (mobj_t* actor)
+                            // continue archvile fire
+                void        A_FireCrackle (mobj_t* actor)
+                            // archvile fire
+                void        A_Fire (mobj_t* actor)
+                            // Spawn the hellfire
+                void        A_VileTarget (mobj_t*	actor)
 
 
 
