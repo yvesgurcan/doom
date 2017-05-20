@@ -418,6 +418,29 @@
                 void        A_SargAttack (mobj_t* actor);
                             // cacodemon attack
                 void        A_HeadAttack (mobj_t* actor);
+                            // cyberdemon
+                void        A_CyberAttack (mobj_t* actor);
+                            // knight of hell
+                void        A_BruisAttack (mobj_t* actor);
+                            // revenants
+                void        A_SkelMissile (mobj_t* actor)
+                            // revenant missile
+                void        A_Tracer (mobj_t* actor)
+                            // is it the sound that revenants make when they do not have a target?
+                void        A_SkelWhoosh (mobj_t*	actor)
+                            // revenant punch
+                void        A_SkelFist (mobj_t*	actor)
+                            // Detect a corpse that could be raised.
+                boolean     PIT_VileCheck (mobj_t*	thing)
+                            // Check for ressurecting a body
+                void        A_VileChase (mobj_t* actor)
+                            // archivile wake-up sound
+                void        A_VileStart (mobj_t* actor)
+                            // start archvile fire
+                void        A_StartFire (mobj_t* actor)
+
+
+
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
                 void        Z_Init (void);

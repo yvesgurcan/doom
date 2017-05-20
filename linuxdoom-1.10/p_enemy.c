@@ -1082,18 +1082,18 @@ void A_Tracer (mobj_t* actor)
 
     if (exact != actor->angle)
     {
-	if (exact - actor->angle > 0x80000000)
-	{
-	    actor->angle -= TRACEANGLE;
-	    if (exact - actor->angle < 0x80000000)
-		actor->angle = exact;
-	}
-	else
-	{
-	    actor->angle += TRACEANGLE;
-	    if (exact - actor->angle > 0x80000000)
-		actor->angle = exact;
-	}
+        if (exact - actor->angle > 0x80000000)
+        {
+            actor->angle -= TRACEANGLE;
+            if (exact - actor->angle < 0x80000000)
+            actor->angle = exact;
+        }
+        else
+        {
+            actor->angle += TRACEANGLE;
+            if (exact - actor->angle > 0x80000000)
+            actor->angle = exact;
+        }
     }
 	
     exact = actor->angle>>ANGLETOFINESHIFT;
@@ -1116,7 +1116,7 @@ void A_Tracer (mobj_t* actor)
 	actor->momz += FRACUNIT/8;
 }
 
-
+// is it the sound that revenants make when they do not have a target?
 void A_SkelWhoosh (mobj_t*	actor)
 {
     if (!actor->target)
@@ -1206,47 +1206,47 @@ void A_VileChase (mobj_t* actor)
 	
     if (actor->movedir != DI_NODIR)
     {
-	// check for corpses to raise
-	viletryx =
-	    actor->x + actor->info->speed*xspeed[actor->movedir];
-	viletryy =
-	    actor->y + actor->info->speed*yspeed[actor->movedir];
+        // check for corpses to raise
+        viletryx =
+            actor->x + actor->info->speed*xspeed[actor->movedir];
+        viletryy =
+            actor->y + actor->info->speed*yspeed[actor->movedir];
 
-	xl = (viletryx - bmaporgx - MAXRADIUS*2)>>MAPBLOCKSHIFT;
-	xh = (viletryx - bmaporgx + MAXRADIUS*2)>>MAPBLOCKSHIFT;
-	yl = (viletryy - bmaporgy - MAXRADIUS*2)>>MAPBLOCKSHIFT;
-	yh = (viletryy - bmaporgy + MAXRADIUS*2)>>MAPBLOCKSHIFT;
-	
-	vileobj = actor;
-	for (bx=xl ; bx<=xh ; bx++)
-	{
-	    for (by=yl ; by<=yh ; by++)
-	    {
-		// Call PIT_VileCheck to check
-		// whether object is a corpse
-		// that canbe raised.
-		if (!P_BlockThingsIterator(bx,by,PIT_VileCheck))
-		{
-		    // got one!
-		    temp = actor->target;
-		    actor->target = corpsehit;
-		    A_FaceTarget (actor);
-		    actor->target = temp;
-					
-		    P_SetMobjState (actor, S_VILE_HEAL1);
-		    S_StartSound (corpsehit, sfx_slop);
-		    info = corpsehit->info;
-		    
-		    P_SetMobjState (corpsehit,info->raisestate);
-		    corpsehit->height <<= 2;
-		    corpsehit->flags = info->flags;
-		    corpsehit->health = info->spawnhealth;
-		    corpsehit->target = NULL;
+        xl = (viletryx - bmaporgx - MAXRADIUS*2)>>MAPBLOCKSHIFT;
+        xh = (viletryx - bmaporgx + MAXRADIUS*2)>>MAPBLOCKSHIFT;
+        yl = (viletryy - bmaporgy - MAXRADIUS*2)>>MAPBLOCKSHIFT;
+        yh = (viletryy - bmaporgy + MAXRADIUS*2)>>MAPBLOCKSHIFT;
+        
+        vileobj = actor;
+        for (bx=xl ; bx<=xh ; bx++)
+        {
+            for (by=yl ; by<=yh ; by++)
+            {
+            // Call PIT_VileCheck to check
+            // whether object is a corpse
+            // that canbe raised.
+                if (!P_BlockThingsIterator(bx,by,PIT_VileCheck))
+                {
+                    // got one!
+                    temp = actor->target;
+                    actor->target = corpsehit;
+                    A_FaceTarget (actor);
+                    actor->target = temp;
+                            
+                    P_SetMobjState (actor, S_VILE_HEAL1);
+                    S_StartSound (corpsehit, sfx_slop);
+                    info = corpsehit->info;
+                    
+                    P_SetMobjState (corpsehit,info->raisestate);
+                    corpsehit->height <<= 2;
+                    corpsehit->flags = info->flags;
+                    corpsehit->health = info->spawnhealth;
+                    corpsehit->target = NULL;
 
-		    return;
-		}
-	    }
-	}
+                    return;
+                }
+            }
+        }
     }
 
     // Return to normal attack.
