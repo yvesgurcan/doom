@@ -1,0 +1,27 @@
+##p_inter.c
+
+In this file, you find:
+
+All the functions related to picking up items.
+
+*maxammo* is the array that defines how much of each type of ammo you can carry.
+
+*clipammo* is the array that defines how much you are given when you pick up a small size of ammo. The bigger size of ammo is derived from the small size by multiplying by 5 (10 x 5 = 50 bullets; 4 x 5 = 20 shells, etc.).
+
+*P_GiveAmmo* is the function that is called when the player picks up ammo. Returns false if the quantity is maxed out already or if the weapon does not need ammo. This function also automatically switches to the weapon that corresponds to the ammo picked up if the player's weapon that is currently up has no ammo or is the fist.
+
+*P_GiveWeapon* is the function that determines whether the player already owns a weapon they picked up. Returns true/false depending on whether the function modified the amount of ammo of the player or if it gave a new weapon to the player. Apparently, the returned value of this function is used to remove the weapon object from the game when true.
+
+*P_GiveBody* is a simple function that gives a certain amount of health to the player. Returns false if the player is already at the maximum amount of health allowed.
+
+*P_GiveArmor* is basically the same as *P_GiveBody* but for the armor.
+
+Obviously, *P_GiveCard* adds a card to the player's inventory.
+
+*P_GivePower* simply handles temporary powerups as well as berserk.
+
+*P_TouchSpecialThing* displays status messages when picking up items. It also plays the appropriate pickup sound. The bug that never shows the "you got a medikit you really needed" message lives in this function.
+
+*P_KillMobj* handles what to do when killing objects. This function keeps track of the kill count and modifies the flags (MF_NOGRAVITY, MF_CORPSE, MF_SOLID, etc.) of the target. It also handles the objects that are dropped when the object dies.
+
+*P_DamageMobj* handles damages inflicted to the player, including modifiers such as skill level and armor. Also handles damages inflicted to monsters.

@@ -490,21 +490,27 @@
                             // transforms the cube into a "randomly" selected monster
                 void        A_SpawnFly (mobj_t* mo);
                             // Player death sound (default or intense when player reaches health of -50)
-                void        A_PlayerScream (mobj_t* mo)
+                void        A_PlayerScream (mobj_t* mo);
 // p_floor.c
                             // Move a plane (floor or ceiling) and check for crushing
                 result_e    T_MovePlane (sector_t* sector, fixed_t speed, fixed_t dest, boolean crush, int floorOrCeiling, int direction)
                             // Move a floor to its destination (up or down)
-                void        T_MoveFloor(floormove_t* floor)
+                void        T_MoveFloor(floormove_t* floor);
                             // Handle floor types
-                int         EV_DoFloor (line_t* line, floor_e floortype)
+                int         EV_DoFloor (line_t* line, floor_e floortype);
                             // Build a staircase
-                int         EV_BuildStairs (line_t* line, stair_e type)
+                int         EV_BuildStairs (line_t* line, stair_e type);
 // p_inter.c
-
-
-
-
+                boolean     P_GiveAmmo (player_t* player, ammotype_t ammo, int num);
+                boolean     P_GiveWeapon (player_t* player, weapontype_t weapon, boolean dropped);
+                boolean     P_GiveBody ( player_t* player, intnum);
+                boolean     P_GiveArmor (player_t* player, int armortype);
+                void        P_GiveCard (player_t* player, card_t card);
+                boolean     P_GivePower (player_t* player, int power)
+                void        P_TouchSpecialThing (mobj_t* special, mobj_t* toucher);
+                void        P_KillMobj (mobj_t* source, mobj_t* target)
+                void        P_DamageMobj (mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
+// p_lights.c
 
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
