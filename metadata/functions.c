@@ -444,6 +444,65 @@
                 void        A_Fire (mobj_t* actor)
                             // Spawn the hellfire
                 void        A_VileTarget (mobj_t*	actor)
+                void        A_VileAttack (mobj_t* actor)
+                            // mancubus
+                void        A_FatRaise (mobj_t *actor)
+                void        A_FatAttack1 (mobj_t* actor)
+                void        A_FatAttack2 (mobj_t* actor)
+                void        A_FatAttack3 (mobj_t* actor)
+                void        A_SkullAttack (mobj_t* actor)
+                            // Spawn a lost soul and launch it at the target
+                void        A_PainShootSkull (mobj_t* actor, angle_t angle)
+                            // Call function to spawn a lost soul and face target
+                void        A_PainAttack (mobj_t* actor)
+                            // Spawns 3 lost souls at different angles when dies
+                void        A_PainDie (mobj_t* actor)
+                void        A_Scream (mobj_t* actor)
+                void        A_XScream (mobj_t* actor)
+                void        A_Pain (mobj_t* actor)
+                void        A_Fall (mobj_t *actor)
+                void        A_Explode (mobj_t* thingy)
+                            // Handles end of level when killing the bosses
+                void        A_BossDeath (mobj_t* mo)
+                            // Cyberdemon step sound
+                void        A_Hoof (mobj_t* mo)
+                            // Mastermind step sound 
+                void        A_Metal (mobj_t* mo)
+                            // Arachnotron step sound
+                void        A_BabyMetal (mobj_t* mo)
+                            // Super Shotgun sounds when firing
+                void        A_OpenShotgun2 (player_t* player, pspdef_t*	psp)
+                void        A_LoadShotgun2 (player_t* player, pspdef_t*	psp)
+                void        A_ReFire (player_t* player, pspdef_t* psp);
+                void        A_CloseShotgun2 (player_t* player, pspdef_t* psp);
+                            // Final boss stuff
+                void        A_BrainAwake (mobj_t* mo)
+                void        A_BrainPain (mobj_t* mo);
+                void        A_BrainScream (mobj_t* mo);
+                            // Generates random rocket explosion objects
+                void        A_BrainExplode (mobj_t* mo);
+                            // Exits the level
+                void        A_BrainDie (mobj_t* mo);
+                            // spawns cubes
+                void        A_BrainSpit (mobj_t* mo);
+                            // sound of cube when generated
+                void        A_SpawnSound (mobj_t* mo);
+                            // transforms the cube into a "randomly" selected monster
+                void        A_SpawnFly (mobj_t* mo);
+                            // Player death sound (default or intense when player reaches health of -50)
+                void        A_PlayerScream (mobj_t* mo)
+// p_floor.c
+                            // Move a plane (floor or ceiling) and check for crushing
+                result_e    T_MovePlane (sector_t* sector, fixed_t speed, fixed_t dest, boolean crush, int floorOrCeiling, int direction)
+                            // Move a floor to its destination (up or down)
+                void        T_MoveFloor(floormove_t* floor)
+                            // Handle floor types
+                int         EV_DoFloor (line_t* line, floor_e floortype)
+                            // Build a staircase
+                int         EV_BuildStairs (line_t* line, stair_e type)
+// p_inter.c
+
+
 
 
 
