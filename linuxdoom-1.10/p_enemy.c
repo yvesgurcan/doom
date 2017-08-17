@@ -1450,7 +1450,7 @@ void A_SkullAttack (mobj_t* actor)
     int			dist;
 
     if (!actor->target)
-	return;
+	    return;
 		
     dest = actor->target;	
     actor->flags |= MF_SKULLFLY;
@@ -1464,8 +1464,8 @@ void A_SkullAttack (mobj_t* actor)
     dist = dist / SKULLSPEED;
     
     if (dist < 1)
-	dist = 1;
-    actor->momz = (dest->z+(dest->height>>1) - actor->z) / dist;
+        dist = 1;
+        actor->momz = (dest->z+(dest->height>>1) - actor->z) / dist;
 }
 
 
@@ -1503,10 +1503,10 @@ A_PainShootSkull
     // if there are allready 20 skulls on the level,
     // don't spit another one
     if (count > 20)
-	return;
+	    return;
 
 
-    // okay, there's playe for another one
+    // okay, there's place for another one
     an = angle >> ANGLETOFINESHIFT;
     
     prestep =
@@ -1642,141 +1642,141 @@ void A_BossDeath (mobj_t* mo)
 		
     if ( gamemode == commercial)
     {
-	if (gamemap != 7)
-	    return;
-		
-	if ((mo->type != MT_FATSO)
-	    && (mo->type != MT_BABY))
-	    return;
+        if (gamemap != 7)
+            return;
+            
+        if ((mo->type != MT_FATSO)
+            && (mo->type != MT_BABY))
+            return;
     }
     else
     {
-	switch(gameepisode)
-	{
-	  case 1:
-	    if (gamemap != 8)
-		return;
+        switch(gameepisode)
+        {
+        case 1:
+            if (gamemap != 8)
+            return;
 
-	    if (mo->type != MT_BRUISER)
-		return;
-	    break;
-	    
-	  case 2:
-	    if (gamemap != 8)
-		return;
+            if (mo->type != MT_BRUISER)
+            return;
+            break;
+            
+        case 2:
+            if (gamemap != 8)
+            return;
 
-	    if (mo->type != MT_CYBORG)
-		return;
-	    break;
-	    
-	  case 3:
-	    if (gamemap != 8)
-		return;
-	    
-	    if (mo->type != MT_SPIDER)
-		return;
-	    
-	    break;
-	    
-	  case 4:
-	    switch(gamemap)
-	    {
-	      case 6:
-		if (mo->type != MT_CYBORG)
-		    return;
-		break;
-		
-	      case 8: 
-		if (mo->type != MT_SPIDER)
-		    return;
-		break;
-		
-	      default:
-		return;
-		break;
-	    }
-	    break;
-	    
-	  default:
-	    if (gamemap != 8)
-		return;
-	    break;
-	}
+            if (mo->type != MT_CYBORG)
+            return;
+            break;
+            
+        case 3:
+            if (gamemap != 8)
+            return;
+            
+            if (mo->type != MT_SPIDER)
+            return;
+            
+            break;
+            
+        case 4:
+            switch(gamemap)
+            {
+            case 6:
+                if (mo->type != MT_CYBORG)
+                    return;
+                break;
+                
+                case 8: 
+                if (mo->type != MT_SPIDER)
+                    return;
+                break;
+                
+                default:
+                return;
+                break;
+            }
+            break;
+            
+        default:
+            if (gamemap != 8)
+            return;
+            break;
+        }
 		
     }
 
     
     // make sure there is a player alive for victory
     for (i=0 ; i<MAXPLAYERS ; i++)
-	if (playeringame[i] && players[i].health > 0)
-	    break;
+	    if (playeringame[i] && players[i].health > 0)
+	        break;
     
     if (i==MAXPLAYERS)
-	return;	// no one left alive, so do not end game
+	    return;	// no one left alive, so do not end game
     
     // scan the remaining thinkers to see
     // if all bosses are dead
     for (th = thinkercap.next ; th != &thinkercap ; th=th->next)
     {
-	if (th->function.acp1 != (actionf_p1)P_MobjThinker)
-	    continue;
-	
-	mo2 = (mobj_t *)th;
-	if (mo2 != mo
-	    && mo2->type == mo->type
-	    && mo2->health > 0)
-	{
-	    // other boss not dead
-	    return;
-	}
+        if (th->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;
+        
+        mo2 = (mobj_t *)th;
+        if (mo2 != mo
+            && mo2->type == mo->type
+            && mo2->health > 0)
+        {
+            // other boss not dead
+            return;
+        }
     }
 	
     // victory!
     if ( gamemode == commercial)
     {
-	if (gamemap == 7)
-	{
-	    if (mo->type == MT_FATSO)
-	    {
-		junk.tag = 666;
-		EV_DoFloor(&junk,lowerFloorToLowest);
-		return;
-	    }
-	    
-	    if (mo->type == MT_BABY)
-	    {
-		junk.tag = 667;
-		EV_DoFloor(&junk,raiseToTexture);
-		return;
-	    }
-	}
+        if (gamemap == 7)
+        {
+            if (mo->type == MT_FATSO)
+            {
+            junk.tag = 666;
+            EV_DoFloor(&junk,lowerFloorToLowest);
+            return;
+            }
+            
+            if (mo->type == MT_BABY)
+            {
+            junk.tag = 667;
+            EV_DoFloor(&junk,raiseToTexture);
+            return;
+            }
+        }
     }
     else
     {
-	switch(gameepisode)
-	{
-	  case 1:
-	    junk.tag = 666;
-	    EV_DoFloor (&junk, lowerFloorToLowest);
-	    return;
-	    break;
-	    
-	  case 4:
-	    switch(gamemap)
-	    {
-	      case 6:
-		junk.tag = 666;
-		EV_DoDoor (&junk, blazeOpen);
-		return;
-		break;
-		
-	      case 8:
-		junk.tag = 666;
-		EV_DoFloor (&junk, lowerFloorToLowest);
-		return;
-		break;
-	    }
-	}
+        switch(gameepisode)
+        {
+        case 1:
+            junk.tag = 666;
+            EV_DoFloor (&junk, lowerFloorToLowest);
+            return;
+            break;
+            
+        case 4:
+            switch(gamemap)
+            {
+            case 6:
+            junk.tag = 666;
+            EV_DoDoor (&junk, blazeOpen);
+            return;
+            break;
+            
+            case 8:
+            junk.tag = 666;
+            EV_DoFloor (&junk, lowerFloorToLowest);
+            return;
+            break;
+            }
+        }
     }
 	
     G_ExitLevel ();
@@ -1851,16 +1851,16 @@ void A_BrainAwake (mobj_t* mo)
 	 thinker != &thinkercap ;
 	 thinker = thinker->next)
     {
-	if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
-	    continue;	// not a mobj
+        if (thinker->function.acp1 != (actionf_p1)P_MobjThinker)
+            continue;	// not a mobj
 
-	m = (mobj_t *)thinker;
+        m = (mobj_t *)thinker;
 
-	if (m->type == MT_BOSSTARGET )
-	{
-	    braintargets[numbraintargets] = m;
-	    numbraintargets++;
-	}
+        if (m->type == MT_BOSSTARGET )
+        {
+            braintargets[numbraintargets] = m;
+            numbraintargets++;
+        }
     }
 	
     S_StartSound (NULL,sfx_bossit);
@@ -1882,16 +1882,16 @@ void A_BrainScream (mobj_t*	mo)
 	
     for (x=mo->x - 196*FRACUNIT ; x< mo->x + 320*FRACUNIT ; x+= FRACUNIT*8)
     {
-	y = mo->y - 320*FRACUNIT;
-	z = 128 + P_Random()*2*FRACUNIT;
-	th = P_SpawnMobj (x,y,z, MT_ROCKET);
-	th->momz = P_Random()*512;
+        y = mo->y - 320*FRACUNIT;
+        z = 128 + P_Random()*2*FRACUNIT;
+        th = P_SpawnMobj (x,y,z, MT_ROCKET);
+        th->momz = P_Random()*512;
 
-	P_SetMobjState (th, S_BRAINEXPLODE1);
+        P_SetMobjState (th, S_BRAINEXPLODE1);
 
-	th->tics -= P_Random()&7;
-	if (th->tics < 1)
-	    th->tics = 1;
+        th->tics -= P_Random()&7;
+        if (th->tics < 1)
+            th->tics = 1;
     }
 	
     S_StartSound (NULL,sfx_bosdth);
@@ -1934,7 +1934,7 @@ void A_BrainSpit (mobj_t*	mo)
 	
     easy ^= 1;
     if (gameskill <= sk_easy && (!easy))
-	return;
+	    return;
 		
     // shoot a cube at current target
     targ = braintargets[braintargeton];
@@ -2007,7 +2007,7 @@ void A_SpawnFly (mobj_t* mo)
 
     newmobj	= P_SpawnMobj (targ->x, targ->y, targ->z, type);
     if (P_LookForPlayers (newmobj, true) )
-	P_SetMobjState (newmobj, newmobj->info->seestate);
+	    P_SetMobjState (newmobj, newmobj->info->seestate);
 	
     // telefrag anything in this spot
     P_TeleportMove (newmobj, newmobj->x, newmobj->y);
@@ -2026,9 +2026,9 @@ void A_PlayerScream (mobj_t* mo)
     if ( (gamemode == commercial)
 	&& 	(mo->health < -50))
     {
-	// IF THE PLAYER DIES
-	// LESS THAN -50% WITHOUT GIBBING
-	sound = sfx_pdiehi;
+        // IF THE PLAYER DIES
+        // LESS THAN -50% WITHOUT GIBBING
+        sound = sfx_pdiehi;
     }
     
     S_StartSound (mo, sound);
