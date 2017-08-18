@@ -53,9 +53,9 @@ void T_FireFlicker (fireflicker_t* flick)
     amount = (P_Random()&3)*16;
     
     if (flick->sector->lightlevel - amount < flick->minlight)
-	flick->sector->lightlevel = flick->minlight;
+	    flick->sector->lightlevel = flick->minlight;
     else
-	flick->sector->lightlevel = flick->maxlight - amount;
+	    flick->sector->lightlevel = flick->maxlight - amount;
 
     flick->count = 4;
 }
@@ -65,7 +65,7 @@ void T_FireFlicker (fireflicker_t* flick)
 //
 // P_SpawnFireFlicker
 //
-void P_SpawnFireFlicker (sector_t*	sector)
+void P_SpawnFireFlicker (sector_t* sector)
 {
     fireflicker_t*	flick;
 	
@@ -98,17 +98,17 @@ void P_SpawnFireFlicker (sector_t*	sector)
 void T_LightFlash (lightflash_t* flash)
 {
     if (--flash->count)
-	return;
+	    return;
 	
     if (flash->sector->lightlevel == flash->maxlight)
     {
-	flash-> sector->lightlevel = flash->minlight;
-	flash->count = (P_Random()&flash->mintime)+1;
+        flash-> sector->lightlevel = flash->minlight;
+        flash->count = (P_Random()&flash->mintime)+1;
     }
     else
     {
-	flash-> sector->lightlevel = flash->maxlight;
-	flash->count = (P_Random()&flash->maxtime)+1;
+        flash-> sector->lightlevel = flash->maxlight;
+        flash->count = (P_Random()&flash->maxtime)+1;
     }
 
 }
@@ -121,7 +121,7 @@ void T_LightFlash (lightflash_t* flash)
 // After the map has been loaded, scan each sector
 // for specials that spawn thinkers
 //
-void P_SpawnLightFlash (sector_t*	sector)
+void P_SpawnLightFlash (sector_t* sector)
 {
     lightflash_t*	flash;
 
@@ -152,20 +152,20 @@ void P_SpawnLightFlash (sector_t*	sector)
 //
 // T_StrobeFlash
 //
-void T_StrobeFlash (strobe_t*		flash)
+void T_StrobeFlash (strobe_t* flash)
 {
     if (--flash->count)
-	return;
+	    return;
 	
     if (flash->sector->lightlevel == flash->minlight)
     {
-	flash-> sector->lightlevel = flash->maxlight;
-	flash->count = flash->brighttime;
+        flash-> sector->lightlevel = flash->maxlight;
+        flash->count = flash->brighttime;
     }
     else
     {
-	flash-> sector->lightlevel = flash->minlight;
-	flash->count =flash->darktime;
+        flash-> sector->lightlevel = flash->minlight;
+        flash->count =flash->darktime;
     }
 
 }
@@ -180,10 +180,10 @@ void T_StrobeFlash (strobe_t*		flash)
 void
 P_SpawnStrobeFlash
 ( sector_t*	sector,
-  int		fastOrSlow,
-  int		inSync )
+  int fastOrSlow,
+  int inSync)
 {
-    strobe_t*	flash;
+    strobe_t* flash;
 	
     flash = Z_Malloc ( sizeof(*flash), PU_LEVSPEC, 0);
 
@@ -197,22 +197,22 @@ P_SpawnStrobeFlash
     flash->minlight = P_FindMinSurroundingLight(sector, sector->lightlevel);
 		
     if (flash->minlight == flash->maxlight)
-	flash->minlight = 0;
+	    flash->minlight = 0;
 
     // nothing special about it during gameplay
     sector->special = 0;	
 
     if (!inSync)
-	flash->count = (P_Random()&7)+1;
+	    flash->count = (P_Random()&7)+1;
     else
-	flash->count = 1;
+	    flash->count = 1;
 }
 
 
 //
 // Start strobing lights (usually from a trigger)
 //
-void EV_StartLightStrobing(line_t*	line)
+void EV_StartLightStrobing(line_t* line)
 {
     int		secnum;
     sector_t*	sec;
@@ -244,22 +244,22 @@ void EV_TurnTagLightsOff(line_t* line)
 	
     sector = sectors;
     
-    for (j = 0;j < numsectors; j++, sector++)
+    for (j = 0; j < numsectors; j++, sector++)
     {
-	if (sector->tag == line->tag)
-	{
-	    min = sector->lightlevel;
-	    for (i = 0;i < sector->linecount; i++)
-	    {
-		templine = sector->lines[i];
-		tsec = getNextSector(templine,sector);
-		if (!tsec)
-		    continue;
-		if (tsec->lightlevel < min)
-		    min = tsec->lightlevel;
-	    }
-	    sector->lightlevel = min;
-	}
+        if (sector->tag == line->tag)
+        {
+            min = sector->lightlevel;
+            for (i = 0; i < sector->linecount; i++)
+            {
+                templine = sector->lines[i];
+                tsec = getNextSector(templine,sector);
+                if (!tsec)
+                    continue;
+                if (tsec->lightlevel < min)
+                    min = tsec->lightlevel;
+            }
+            sector->lightlevel = min;
+        }
     }
 }
 
@@ -269,8 +269,8 @@ void EV_TurnTagLightsOff(line_t* line)
 //
 void
 EV_LightTurnOn
-( line_t*	line,
-  int		bright )
+( line_t* line,
+  int bright)
 {
     int		i;
     int		j;
@@ -282,27 +282,27 @@ EV_LightTurnOn
 	
     for (i=0;i<numsectors;i++, sector++)
     {
-	if (sector->tag == line->tag)
-	{
-	    // bright = 0 means to search
-	    // for highest light level
-	    // surrounding sector
-	    if (!bright)
-	    {
-		for (j = 0;j < sector->linecount; j++)
-		{
-		    templine = sector->lines[j];
-		    temp = getNextSector(templine,sector);
+        if (sector->tag == line->tag)
+        {
+            // bright = 0 means to search
+            // for highest light level
+            // surrounding sector
+            if (!bright)
+            {
+                for (j = 0;j < sector->linecount; j++)
+                {
+                    templine = sector->lines[j];
+                    temp = getNextSector(templine,sector);
 
-		    if (!temp)
-			continue;
+                    if (!temp)
+                        continue;
 
-		    if (temp->lightlevel > bright)
-			bright = temp->lightlevel;
-		}
-	    }
-	    sector-> lightlevel = bright;
-	}
+                    if (temp->lightlevel > bright)
+                        bright = temp->lightlevel;
+                }
+            }
+            sector-> lightlevel = bright;
+        }
     }
 }
 
@@ -315,25 +315,25 @@ void T_Glow(glow_t*	g)
 {
     switch(g->direction)
     {
-      case -1:
-	// DOWN
-	g->sector->lightlevel -= GLOWSPEED;
-	if (g->sector->lightlevel <= g->minlight)
-	{
-	    g->sector->lightlevel += GLOWSPEED;
-	    g->direction = 1;
-	}
-	break;
-	
-      case 1:
-	// UP
-	g->sector->lightlevel += GLOWSPEED;
-	if (g->sector->lightlevel >= g->maxlight)
-	{
-	    g->sector->lightlevel -= GLOWSPEED;
-	    g->direction = -1;
-	}
-	break;
+        case -1:
+            // DOWN
+            g->sector->lightlevel -= GLOWSPEED;
+            if (g->sector->lightlevel <= g->minlight)
+            {
+                g->sector->lightlevel += GLOWSPEED;
+                g->direction = 1;
+            }
+            break;
+        
+        case 1:
+            // UP
+            g->sector->lightlevel += GLOWSPEED;
+            if (g->sector->lightlevel >= g->maxlight)
+            {
+                g->sector->lightlevel -= GLOWSPEED;
+                g->direction = -1;
+            }
+            break;
     }
 }
 

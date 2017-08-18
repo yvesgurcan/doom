@@ -511,7 +511,16 @@
                 void        P_KillMobj (mobj_t* source, mobj_t* target)
                 void        P_DamageMobj (mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 // p_lights.c
-
+                void    T_FireFlicker (fireflicker_t* flick)
+                void    P_SpawnFireFlicker (sector_t* sector)
+                void    T_LightFlash (lightflash_t* flash)
+                void    P_SpawnLightFlash (sector_t* sector)
+                void    T_StrobeFlash (strobe_t* flash)
+                void    P_SpawnStrobeFlash (sector_t*	sector, int fastOrSlow, int inSync)
+                void    EV_StartLightStrobing(line_t* line)
+                void    EV_TurnTagLightsOff(line_t* line)
+                void    EV_LightTurnOn (line_t* line, int bright)
+                void    T_Glow(glow_t* g)
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
                 void        Z_Init (void);

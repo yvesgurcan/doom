@@ -25,3 +25,27 @@ Obviously, *P_GiveCard* adds a card to the player's inventory.
 *P_KillMobj* handles what to do when killing objects. This function keeps track of the kill count and modifies the flags (MF_NOGRAVITY, MF_CORPSE, MF_SOLID, etc.) of the target. It also handles the objects that are dropped when the object dies.
 
 *P_DamageMobj* handles damages inflicted to the player, including modifiers such as skill level and armor. Also handles damages inflicted to monsters.
+
+## p_lights.c
+
+*T_FireFlicker* seems to add a randomized amount to the brightness of the level provided that the light level does not go beyond a min and a max threshold. The function returns nothing.
+
+*P_SpawnFireFlicker* handles sectors that have the light flickering attribute. It looks like the brightness of the flickers can not exceed the sector's original brightness. The minimum value is equal to the brightness of the least bright adjacent sector... plus 16! Who knows why.
+
+*T_LightFlash* has a similar logic, with a random value in the mix.
+
+*P_SpawnLightFlash* is even more similar to *P_SpawnFireFlicker* and, like *T_LightFlash*, it also includes randomness.
+
+The code of *T_StrobeFlash* is almost identical to *T_LightFlash*. No randomess, though.
+
+*P_SpawnStrobeFlash* takes fastOrSlow and inSync as arguments, along with a sector object. Once again, the code looks very similar to the previous functions. It executes *T_StrobeFlash*.
+
+*EV_StartLightStrobing* is the function that starts *P_SpawnStrobeFlash*. It is triggered by a line on the map.
+
+*EV_TurnTagLightsOff* looks slightly confusing. It looks for a match between the tag of a sector and the tag of a line, which means that it is triggered by a line. However, I am not sure what its effect is. Turn the light level of all sectors to the brightness of the least bright sector?
+
+*EV_TurnTagLightsOn* does the opposite (I think) of *EV_TurnTagLightsOff*.
+
+*T_Glow* gradually increments/decrements the light level of the targeted sector.
+
+*P_SpawnGlowingLight* starts the glowing effect.
