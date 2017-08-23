@@ -1,16 +1,8 @@
 // STRING SEARCH
-// parses 1 file ($file) and saves the occurrences of $string in $savefile
-file="d_main.h"; string="D_DoomMain"; echo "=== $string in $file ==="; cat $file | grep $string
+// parses all the files in the current folder (except for CVS) and displays the occurrences of $string surrounded by its context in the terminal
+string="P_SetMobjState (thing, S_GIBS)";
+lines=10;
+echo "Looking for '$string'"...;for i in *; do grep -inH -C$lines "$string" $i --exclude=CVS; done
 
-// INCLUDES
-// parses all the files in the current folder and saves the occurrences of "#include" in ../metadata/includes
-"" > ../metadata/includes; for i in *; do echo "=== Includes in $i ===" >> ../metadata/includes; cat $i | grep "#include" >> ../metadata/includes; done
-
-// does the same thing but shows the output in the terminal instead of saving it in a file
-for i in *; do echo "=== Includes in $i ==="; cat $i | grep "#include"; done
-
-// parses 1 file (var $file) in the current folder and adds the occurrences of #include in ../metadata/includes
-file="am_map.c"; echo "=== Includes in $file ===" >> ../metadata/includes; cat $file | grep "#include" >> ../metadata/includes
-
-// does the same thing but shows the output in the terminal instead of saving it in a file
-file="am_map.c"; echo "=== Includes in $file ==="; cat $file | grep "#include"
+// add this to save the content to the file of your choice
+>> ../metadata/lastsearch

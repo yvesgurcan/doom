@@ -900,7 +900,7 @@ PTR_AimTraverse (intercept_t* in)
     
     // this thing can be hit!
     if (thingtopslope > topslope)
-	thingtopslope = topslope;
+	    thingtopslope = topslope;
     
     if (thingbottomslope < bottomslope)
 	thingbottomslope = bottomslope;
@@ -908,7 +908,7 @@ PTR_AimTraverse (intercept_t* in)
     aimslope = (thingtopslope+thingbottomslope)/2;
     linetarget = th;
 
-    return false;			// don't go any farther
+    return false; // don't go any farther
 }
 
 
@@ -976,11 +976,13 @@ boolean PTR_ShootTraverse (intercept_t* in)
 	{
 	    // don't shoot the sky!
 	    if (z > li->frontsector->ceilingheight)
-		return false;
+		    return false;
 	    
 	    // it's a sky hack wall
+        // the code below is the source of the 'Bullet puffs do not appear in outdoor areas' bug. (see https://doomwiki.org/wiki/Bullet_puffs_do_not_appear_in_outdoor_areas)
+        // because there is no check here to see if the player has hit the upper texture, the bullets will disappear when the player shots at the lower texture
 	    if	(li->backsector && li->backsector->ceilingpic == skyflatnum)
-		return false;		
+		    return false;		
 	}
 
 	// Spawn bullet puffs.
@@ -1279,22 +1281,26 @@ boolean PIT_ChangeSector (mobj_t*	thing)
 	
     if (P_ThingHeightClip (thing))
     {
-	// keep checking
-	return true;
+        // keep checking
+        return true;
     }
     
 
     // crunch bodies to giblets
     if (thing->health <= 0)
     {
-	P_SetMobjState (thing, S_GIBS);
+        // the following code creates small pools of gore
+        P_SetMobjState (thing, S_GIBS);
 
-	thing->flags &= ~MF_SOLID;
-	thing->height = 0;
-	thing->radius = 0;
+        thing->flags &= ~MF_SOLID;
+        thing->height = 0;
+        thing->radius = 0;
 
-	// keep checking
-	return true;		
+        // for monsters that ares resurrected by the archvile from a pool of blood, height and radius do not get restored in the resurrection code
+        // see https://doomwiki.org/wiki/Ghost_monster for more details
+
+        // keep checking
+        return true;		
     }
 
     // crunch dropped items

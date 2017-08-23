@@ -1007,15 +1007,20 @@ void A_BruisAttack (mobj_t* actor)
 {
     int		damage;
 	
+    // the baron has lots its target
     if (!actor->target)
-	return;
-		
+	    return;
+	
+    // note: this is where the 'Baron attacks a monster behind him' bug occurs. The bug is due to the fact that this function does not call A_FaceTarget (actor); like other attacks do. Because of this, there is a small chance to see the monster facing a different direction from the target when attacking.
+    // see https://doomwiki.org/wiki/Baron_attacks_a_monster_behind_him
+
+    // close enough to claw the target
     if (P_CheckMeleeRange (actor))
     {
-	S_StartSound (actor, sfx_claw);
-	damage = (P_Random()%8+1)*10;
-	P_DamageMobj (actor->target, actor, actor, damage);
-	return;
+        S_StartSound (actor, sfx_claw);
+        damage = (P_Random()%8+1)*10;
+        P_DamageMobj (actor->target, actor, actor, damage);
+        return;
     }
     
     // launch a missile
@@ -1303,8 +1308,6 @@ void A_Fire (mobj_t* actor)
     P_SetThingPosition (actor);
 }
 
-
-
 //
 // A_VileTarget
 // Spawn the hellfire
@@ -1314,54 +1317,62 @@ void A_VileTarget (mobj_t*	actor)
     mobj_t*	fog;
 	
     if (!actor->target)
-	return;
+	    return;
 
     A_FaceTarget (actor);
 
-    fog = P_SpawnMobj (actor->target->x,
-		       actor->target->x,
-		       actor->target->z, MT_FIRE);
-    
+    // this is where the "Arch-Vile fire spawned at the wrong location" bug lives
+    // see https://doomwiki.org/wiki/Arch-Vile_fire_spawned_at_the_wrong_location
+    fog = P_SpawnMobj(
+        actor->target->x,
+		actor->target->x, // typo! should be y instead of x.
+		actor->target->z, MT_FIRE
+    );
+    // this typo causes the initial position of the fire to be shifted on the x-y plane relative to the target of the arch-vile's attack. Should the target become hidden from the arch-vile's line of sight before the fire's position is updated, the fire will remain in this incorrect position until it dissipates completely.
+
     actor->tracer = fog;
     fog->target = actor;
     fog->tracer = actor->target;
     A_Fire (fog);
 }
 
-
-
-
 //
 // A_VileAttack
+// the hellfire chases the target
 //
 void A_VileAttack (mobj_t* actor)
 {	
     mobj_t*	fire;
-    int		an;
+    int an;
 	
+    // the arch-vile does not have a target anymore (probably because the target is dead)
     if (!actor->target)
-	return;
+	    return;
     
     A_FaceTarget (actor);
 
+    // the arch-vile has lost sight of the target
     if (!P_CheckSight (actor, actor->target) )
-	return;
+	    return;
 
+    // boom!
     S_StartSound (actor, sfx_barexp);
     P_DamageMobj (actor->target, actor, actor, 20);
+    // momentum
     actor->target->momz = 1000*FRACUNIT/actor->target->info->mass;
 	
     an = actor->angle >> ANGLETOFINESHIFT;
 
     fire = actor->tracer;
 
+    // attack has stopped
     if (!fire)
-	return;
+	    return;
 		
-    // move the fire between the vile and the player
+    // the fire follows the target
     fire->x = actor->target->x - FixedMul (24*FRACUNIT, finecosine[an]);
     fire->y = actor->target->y - FixedMul (24*FRACUNIT, finesine[an]);	
-    P_RadiusAttack (fire, actor, 70 );
+    P_RadiusAttack (fire, actor, 70);
 }
 
 

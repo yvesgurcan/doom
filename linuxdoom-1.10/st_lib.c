@@ -206,17 +206,16 @@ STlib_initMultIcon
     i->p	= il;
 }
 
-
-
+// this updates, among other things, doomguy's face
 void
 STlib_updateMultIcon
-( st_multicon_t*	mi,
-  boolean		refresh )
+(st_multicon_t* mi,
+  boolean refresh)
 {
-    int			w;
-    int			h;
-    int			x;
-    int			y;
+    int w;
+    int h;
+    int x;
+    int y;
 
     if (*mi->on
 	&& (mi->oldinum != *mi->inum || refresh)

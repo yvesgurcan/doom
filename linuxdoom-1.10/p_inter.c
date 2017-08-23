@@ -928,23 +928,24 @@ P_DamageMobj
     if ((P_Random () < target->info->painchance)
 	 && !(target->flags&MF_SKULLFLY))
     {
-		target->flags |= MF_JUSTHIT; // fight back!
-		P_SetMobjState (target, target->info->painstate);
+			target->flags |= MF_JUSTHIT; // fight back!
+			P_SetMobjState (target, target->info->painstate);
     }
 			
     target->reactiontime = 0; // we're awake now...	
 
+		// there used to be a bug in Doom version 1.4 and prior where monsters would commit suicide. the code below was likely the source of the bug known as 'Barrel suicide'. The source != target check was probably missing (see https://doomwiki.org/wiki/Barrel_suicide).
     if ((!target->threshold || target->type == MT_VILE)
-	 && source && source != target
-	 && source->type != MT_VILE)
+			&& source && source != target
+			&& source->type != MT_VILE)
     {
-		// if not intent on another player,
-		// chase after this one
-		target->target = source;
-		target->threshold = BASETHRESHOLD;
-		if (target->state == &states[target->info->spawnstate]
-			&& target->info->seestate != S_NULL)
-			P_SetMobjState (target, target->info->seestate);
+			// if not intent on another player,
+			// chase after this one
+			target->target = source;
+			target->threshold = BASETHRESHOLD;
+			if (target->state == &states[target->info->spawnstate]
+				&& target->info->seestate != S_NULL)
+				P_SetMobjState (target, target->info->seestate);
     }
 			
 }
