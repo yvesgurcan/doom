@@ -530,6 +530,9 @@
                 boolean P_CheckPosition (mobj_t* thing, fixed_t x, fixed_t y)
                 boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y)
                 boolean P_ThingHeightClip (mobj_t* thing)
+                void    P_HitSlideLine (line_t* ld)
+                boolean PTR_SlideTraverse (intercept_t* in)
+                void    P_SlideMove (mobj_t* mo)
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
                 void        Z_Init (void);
