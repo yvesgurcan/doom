@@ -58,5 +58,16 @@ The code of *T_StrobeFlash* is almost identical to *T_LightFlash*. No randomess,
 
 *PIT_CheckLine* takes a linedef as an argument and returns false if the line can not be crossed by the object. This include cases where the line is one-sided or the line has a block monster flag. It also somewhat keeps tracks of the special tags.
 
-*PIT_CheckThing* does a collision check for things. This function does include the code that damages the target of the melee attack of lost souls as well as the code that damages targets from missiles.
+*PIT_CheckThing* does a collision check for things. This function does include the code that damages the target of the melee attack of lost souls as well as the code that damages targets from missiles. Returns false when the projectile stops and true if it can keep going.
 
+Apparently, *P_CheckPosition* is purely informative. It will return false if the thing is a solid wall or a thing.
+
+*P_TryMove* returns true and moves the thing to the set coordinates if possible. This is where special line triggers that the player or monsters walk on are activated. I believe also that this is the part of the code that prevents thing from stepping up more than 24 units at a time and where the noclip mode works its magic.
+
+*P_ThingHeightClip* is called when a sector changes height to check if a thing fits in the sector. If not, the function returns false and will clip the thing to the sector height.
+
+*P_HitSlideLine* takes a line as an argument. This function does not return anything but it sets the tmxmove and tmymove variables (of type fixed_t) to zero when appropriate.
+
+*PTR_SlideTraverse* seems to be the function that decides how the player is going to slide when colliding with a wall. It returns true when the line is not blocking and false when it intercepts things.
+
+*P_SlideMove* does not return anything. It seems to be the function that actually does the sliding.

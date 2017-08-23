@@ -527,6 +527,9 @@
                 P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y)
                 boolean PIT_CheckLine (line_t* ld)
                 boolean PIT_CheckThing (mobj_t* thing)
+                boolean P_CheckPosition (mobj_t* thing, fixed_t x, fixed_t y)
+                boolean P_TryMove (mobj_t* thing, fixed_t x, fixed_t y)
+                boolean P_ThingHeightClip (mobj_t* thing)
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
                 void        Z_Init (void);
