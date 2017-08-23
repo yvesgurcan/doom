@@ -521,6 +521,12 @@
                 void    EV_TurnTagLightsOff(line_t* line)
                 void    EV_LightTurnOn (line_t* line, int bright)
                 void    T_Glow(glow_t* g)
+                void    P_SpawnGlowingLight(sector_t* sector)
+// p_map.c
+                boolean PIT_StompThing (mobj_t* thing)
+                P_TeleportMove (mobj_t* thing, fixed_t x, fixed_t y)
+                boolean PIT_CheckLine (line_t* ld)
+                boolean PIT_CheckThing (mobj_t* thing)
 // z_zone.c
                 void        Z_ClearZone (memzone_t* zone);
                 void        Z_Init (void);

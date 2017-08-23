@@ -44,8 +44,19 @@ The code of *T_StrobeFlash* is almost identical to *T_LightFlash*. No randomess,
 
 *EV_TurnTagLightsOff* looks slightly confusing. It looks for a match between the tag of a sector and the tag of a line, which means that it is triggered by a line. However, I am not sure what its effect is. Turn the light level of all sectors to the brightness of the least bright sector?
 
-*EV_TurnTagLightsOn* does the opposite (I think) of *EV_TurnTagLightsOff*.
+*EV_LightTurnOn* does the opposite (I think) of *EV_TurnTagLightsOff*.
 
 *T_Glow* gradually increments/decrements the light level of the targeted sector.
 
 *P_SpawnGlowingLight* starts the glowing effect.
+
+## p_map.c
+
+*PIT_StompThing* is the function that controls telefragging. It inflics 10,000 points of damage to the target.
+
+*P_TeleportMove* moves the thing to the new subsector.
+
+*PIT_CheckLine* takes a linedef as an argument and returns false if the line can not be crossed by the object. This include cases where the line is one-sided or the line has a block monster flag. It also somewhat keeps tracks of the special tags.
+
+*PIT_CheckThing* does a collision check for things. This function does include the code that damages the target of the melee attack of lost souls as well as the code that damages targets from missiles.
+

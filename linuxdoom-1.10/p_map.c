@@ -83,24 +83,24 @@ boolean PIT_StompThing (mobj_t* thing)
     fixed_t	blockdist;
 		
     if (!(thing->flags & MF_SHOOTABLE) )
-	return true;
+	    return true;
 		
     blockdist = thing->radius + tmthing->radius;
     
     if ( abs(thing->x - tmx) >= blockdist
 	 || abs(thing->y - tmy) >= blockdist )
     {
-	// didn't hit it
-	return true;
+        // didn't hit it
+        return true;
     }
     
     // don't clip against self
     if (thing == tmthing)
-	return true;
+	    return true;
     
     // monsters don't stomp things except on boss level
-    if ( !tmthing->player && gamemap != 30)
-	return false;	
+    if (!tmthing->player && gamemap != 30)
+	    return false;	
 		
     P_DamageMobj (thing, tmthing, tmthing, 10000);
 	
@@ -113,9 +113,9 @@ boolean PIT_StompThing (mobj_t* thing)
 //
 boolean
 P_TeleportMove
-( mobj_t*	thing,
-  fixed_t	x,
-  fixed_t	y )
+( mobj_t* thing,
+  fixed_t x,
+  fixed_t y)
 {
     int			xl;
     int			xh;
@@ -141,10 +141,8 @@ P_TeleportMove
     newsubsec = R_PointInSubsector (x,y);
     ceilingline = NULL;
     
-    // The base floor/ceiling is from the subsector
-    // that contains the point.
-    // Any contacted lines the step closer together
-    // will adjust them.
+    // The base floor/ceiling is from the subsector that contains the point.
+    // Any contacted lines the step closer together will adjust them.
     tmfloorz = tmdropoffz = newsubsec->sector->floorheight;
     tmceilingz = newsubsec->sector->ceilingheight;
 			
@@ -158,9 +156,9 @@ P_TeleportMove
     yh = (tmbbox[BOXTOP] - bmaporgy + MAXRADIUS)>>MAPBLOCKSHIFT;
 
     for (bx=xl ; bx<=xh ; bx++)
-	for (by=yl ; by<=yh ; by++)
-	    if (!P_BlockThingsIterator(bx,by,PIT_StompThing))
-		return false;
+        for (by=yl ; by<=yh ; by++)
+            if (!P_BlockThingsIterator(bx,by,PIT_StompThing)) // telefrag
+            return false;
     
     // the move is ok,
     // so link the thing into its new position
@@ -192,15 +190,14 @@ boolean PIT_CheckLine (line_t* ld)
 	|| tmbbox[BOXLEFT] >= ld->bbox[BOXRIGHT]
 	|| tmbbox[BOXTOP] <= ld->bbox[BOXBOTTOM]
 	|| tmbbox[BOXBOTTOM] >= ld->bbox[BOXTOP] )
-	return true;
+	    return true;
 
     if (P_BoxOnLineSide (tmbbox, ld) != -1)
-	return true;
+	    return true;
 		
     // A line has been hit
     
-    // The moving thing's destination position will cross
-    // the given line.
+    // The moving thing's destination position will cross the given line.
     // If this should not be allowed, return false.
     // If the line is special, keep track of it
     // to process later if the move is proven ok.
@@ -209,15 +206,15 @@ boolean PIT_CheckLine (line_t* ld)
     // could be crossed in either order.
     
     if (!ld->backsector)
-	return false;		// one sided line
+	    return false;		// one sided line
 		
     if (!(tmthing->flags & MF_MISSILE) )
     {
-	if ( ld->flags & ML_BLOCKING )
-	    return false;	// explicitly blocking everything
+        if ( ld->flags & ML_BLOCKING )
+            return false;	// explicitly blocking everything
 
-	if ( !tmthing->player && ld->flags & ML_BLOCKMONSTERS )
-	    return false;	// block monsters only
+        if ( !tmthing->player && ld->flags & ML_BLOCKMONSTERS )
+            return false;	// block monsters only
     }
 
     // set openrange, opentop, openbottom
@@ -226,21 +223,21 @@ boolean PIT_CheckLine (line_t* ld)
     // adjust floor / ceiling heights
     if (opentop < tmceilingz)
     {
-	tmceilingz = opentop;
-	ceilingline = ld;
+        tmceilingz = opentop;
+        ceilingline = ld;
     }
 
     if (openbottom > tmfloorz)
-	tmfloorz = openbottom;	
+	    tmfloorz = openbottom;	
 
     if (lowfloor < tmdropoffz)
-	tmdropoffz = lowfloor;
+	    tmdropoffz = lowfloor;
 		
     // if contacted a special line, add it to the list
     if (ld->special)
     {
-	spechit[numspechit] = ld;
-	numspechit++;
+        spechit[numspechit] = ld;
+        numspechit++;
     }
 
     return true;
@@ -251,20 +248,20 @@ boolean PIT_CheckLine (line_t* ld)
 //
 boolean PIT_CheckThing (mobj_t* thing)
 {
-    fixed_t		blockdist;
-    boolean		solid;
-    int			damage;
+    fixed_t blockdist;
+    boolean solid;
+    int damage;
 		
-    if (!(thing->flags & (MF_SOLID|MF_SPECIAL|MF_SHOOTABLE) ))
-	return true;
+    if (!(thing->flags & (MF_SOLID|MF_SPECIAL|MF_SHOOTABLE ))
+	    return true;
     
     blockdist = thing->radius + tmthing->radius;
 
-    if ( abs(thing->x - tmx) >= blockdist
-	 || abs(thing->y - tmy) >= blockdist )
+    if (abs(thing->x - tmx) >= blockdist
+	 || abs(thing->y - tmy) >= blockdist)
     {
-	// didn't hit it
-	return true;	
+        // didn't hit it
+        return true;	
     }
     
     // don't clip against self
@@ -274,69 +271,69 @@ boolean PIT_CheckThing (mobj_t* thing)
     // check for skulls slamming into things
     if (tmthing->flags & MF_SKULLFLY)
     {
-	damage = ((P_Random()%8)+1)*tmthing->info->damage;
-	
-	P_DamageMobj (thing, tmthing, tmthing, damage);
-	
-	tmthing->flags &= ~MF_SKULLFLY;
-	tmthing->momx = tmthing->momy = tmthing->momz = 0;
-	
-	P_SetMobjState (tmthing, tmthing->info->spawnstate);
-	
-	return false;		// stop moving
+        damage = ((P_Random()%8)+1)*tmthing->info->damage;
+        
+        P_DamageMobj (thing, tmthing, tmthing, damage);
+        
+        tmthing->flags &= ~MF_SKULLFLY;
+        tmthing->momx = tmthing->momy = tmthing->momz = 0;
+        
+        P_SetMobjState (tmthing, tmthing->info->spawnstate);
+        
+        return false;		// stop moving
     }
 
     
     // missiles can hit other things
     if (tmthing->flags & MF_MISSILE)
     {
-	// see if it went over / under
-	if (tmthing->z > thing->z + thing->height)
-	    return true;		// overhead
-	if (tmthing->z+tmthing->height < thing->z)
-	    return true;		// underneath
-		
-	if (tmthing->target && (
-	    tmthing->target->type == thing->type || 
-	    (tmthing->target->type == MT_KNIGHT && thing->type == MT_BRUISER)||
-	    (tmthing->target->type == MT_BRUISER && thing->type == MT_KNIGHT) ) )
-	{
-	    // Don't hit same species as originator.
-	    if (thing == tmthing->target)
-		return true;
+        // see if it went over / under
+        if (tmthing->z > thing->z + thing->height)
+            return true;		// overhead
+        if (tmthing->z+tmthing->height < thing->z)
+            return true;		// underneath
+            
+        if (tmthing->target && (
+            tmthing->target->type == thing->type || 
+            (tmthing->target->type == MT_KNIGHT && thing->type == MT_BRUISER)||
+            (tmthing->target->type == MT_BRUISER && thing->type == MT_KNIGHT) ) )
+        {
+            // Don't hit same species as originator.
+            if (thing == tmthing->target)
+            return true;
 
-	    if (thing->type != MT_PLAYER)
-	    {
-		// Explode, but do no damage.
-		// Let players missile other players.
-		return false;
-	    }
-	}
-	
-	if (! (thing->flags & MF_SHOOTABLE) )
-	{
-	    // didn't do any damage
-	    return !(thing->flags & MF_SOLID);	
-	}
-	
-	// damage / explode
-	damage = ((P_Random()%8)+1)*tmthing->info->damage;
-	P_DamageMobj (thing, tmthing, tmthing->target, damage);
+            if (thing->type != MT_PLAYER)
+            {
+            // Explode, but do no damage.
+            // Let players missile other players.
+            return false;
+            }
+        }
+        
+        if (! (thing->flags & MF_SHOOTABLE) )
+        {
+            // didn't do any damage
+            return !(thing->flags & MF_SOLID);	
+        }
+        
+        // damage / explode
+        damage = ((P_Random()%8)+1)*tmthing->info->damage;
+        P_DamageMobj (thing, tmthing, tmthing->target, damage);
 
-	// don't traverse any more
-	return false;				
+        // don't traverse any more
+        return false;				
     }
     
     // check for special pickup
     if (thing->flags & MF_SPECIAL)
     {
-	solid = thing->flags&MF_SOLID;
-	if (tmflags&MF_PICKUP)
-	{
-	    // can remove thing
-	    P_TouchSpecialThing (thing, tmthing);
-	}
-	return !solid;
+        solid = thing->flags&MF_SOLID;
+        if (tmflags&MF_PICKUP)
+        {
+            // can remove thing
+            P_TouchSpecialThing (thing, tmthing);
+        }
+        return !solid;
     }
 	
     return !(thing->flags & MF_SOLID);
