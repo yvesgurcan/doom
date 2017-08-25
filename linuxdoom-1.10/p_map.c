@@ -300,13 +300,13 @@ boolean PIT_CheckThing (mobj_t* thing)
         {
             // Don't hit same species as originator.
             if (thing == tmthing->target)
-            return true;
+                return true;
 
             if (thing->type != MT_PLAYER)
             {
-            // Explode, but do no damage.
-            // Let players missile other players.
-            return false;
+                // Explode, but do no damage.
+                // Let players missile other players.
+                return false;
             }
         }
         
