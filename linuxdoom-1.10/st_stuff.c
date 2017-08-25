@@ -80,50 +80,54 @@ rcsid[] = "$Id: st_stuff.c,v 1.6 1997/02/03 22:45:13 b1 Exp $";
 #define ST_FACEPROBABILITY		96
 
 // For Responder
-#define ST_TOGGLECHAT		KEY_ENTER
+#define ST_TOGGLECHAT KEY_ENTER
 
 // Location of status bar
-#define ST_X				0
-#define ST_X2				104
+#define ST_X 0
+#define ST_X2 104
 
-#define ST_FX  			143
-#define ST_FY  			169
+#define ST_FX 143
+#define ST_FY 169
 
 // Should be set to patch width
 //  for tall numbers later on
-#define ST_TALLNUMWIDTH		(tallnum[0]->width)
+#define ST_TALLNUMWIDTH (tallnum[0]->width)
 
-// Number of status faces.
-#define ST_NUMPAINFACES		5
-#define ST_NUMSTRAIGHTFACES	3
-#define ST_NUMTURNFACES		2
-#define ST_NUMSPECIALFACES		3
+// doomguy's status bar face stuff
+// number of status faces
+#define ST_NUMPAINFACES 5
+#define ST_NUMSTRAIGHTFACES 3
+#define ST_NUMTURNFACES 2
+#define ST_NUMSPECIALFACES 3
 
 #define ST_FACESTRIDE \
           (ST_NUMSTRAIGHTFACES+ST_NUMTURNFACES+ST_NUMSPECIALFACES)
 
-#define ST_NUMEXTRAFACES		2
+#define ST_NUMEXTRAFACES 2
 
 #define ST_NUMFACES \
           (ST_FACESTRIDE*ST_NUMPAINFACES+ST_NUMEXTRAFACES)
 
-#define ST_TURNOFFSET		(ST_NUMSTRAIGHTFACES)
-#define ST_OUCHOFFSET		(ST_TURNOFFSET + ST_NUMTURNFACES)
-#define ST_EVILGRINOFFSET		(ST_OUCHOFFSET + 1)
-#define ST_RAMPAGEOFFSET		(ST_EVILGRINOFFSET + 1)
-#define ST_GODFACE			(ST_NUMPAINFACES*ST_FACESTRIDE)
-#define ST_DEADFACE			(ST_GODFACE+1)
 
-#define ST_FACESX			143
-#define ST_FACESY			168
+#define ST_TURNOFFSET (ST_NUMSTRAIGHTFACES)
+#define ST_OUCHOFFSET (ST_TURNOFFSET + ST_NUMTURNFACES)
+#define ST_EVILGRINOFFSET (ST_OUCHOFFSET + 1)
+#define ST_RAMPAGEOFFSET (ST_EVILGRINOFFSET + 1)
+#define ST_GODFACE (ST_NUMPAINFACES * ST_FACESTRIDE)
+#define ST_DEADFACE (ST_GODFACE + 1)
 
-#define ST_EVILGRINCOUNT		(2*TICRATE)
-#define ST_STRAIGHTFACECOUNT	(TICRATE/2)
-#define ST_TURNCOUNT		(1*TICRATE)
-#define ST_OUCHCOUNT		(1*TICRATE)
-#define ST_RAMPAGEDELAY		(2*TICRATE)
+#define ST_FACESX 143
+#define ST_FACESY 168
 
-#define ST_MUCHPAIN			20
+// number of tics to wait before changing doomguy's face
+#define ST_EVILGRINCOUNT (2*TICRATE)
+#define ST_STRAIGHTFACECOUNT (TICRATE/2)
+#define ST_TURNCOUNT (1*TICRATE)
+#define ST_OUCHCOUNT (1*TICRATE)
+#define ST_RAMPAGEDELAY (2*TICRATE)
+
+// how much pain is considered a lot of pain for doomguy (used for the ouch face)
+#define ST_MUCHPAIN 20
 
 
 // Location and size of statistics,
@@ -728,193 +732,207 @@ ST_Responder (event_t* ev)
 
 int ST_calcPainOffset(void)
 {
-    int		health;
-    static int	lastcalc;
-    static int	oldhealth = -1;
+    int health;
+    static int lastcalc;
+    static int oldhealth = -1;
     
     health = plyr->health > 100 ? 100 : plyr->health;
 
     if (health != oldhealth)
     {
-	lastcalc = ST_FACESTRIDE * (((100 - health) * ST_NUMPAINFACES) / 101);
-	oldhealth = health;
+		lastcalc = ST_FACESTRIDE * (((100 - health) * ST_NUMPAINFACES) / 101);
+		oldhealth = health;
     }
     return lastcalc;
 }
 
 
 //
-// This is a not-very-pretty routine which handles
-//  the face states and their timing.
-// the precedence of expressions is:
-//  dead > evil grin > turned head > straight ahead
-//
+// this is a not-very-pretty routine which handles the face states and their timing.
+// st_facecount is the number of tics left before the face times out and returns to the normal face
+// faces are shown depending on the following precedence of expressions:
+// 		dead > new weapon > ouch > rampage > normal
 void ST_updateFaceWidget(void)
 {
-    int		i;
+    int i;
     angle_t	badguyangle;
     angle_t	diffang;
-    static int	lastattackdown = -1;
-    static int	priority = 0;
+    static int lastattackdown = -1;
+    static int priority = 0;
     boolean	doevilgrin;
 
     if (priority < 10)
     {
-	// dead
-	if (!plyr->health)
-	{
-	    priority = 9;
-	    st_faceindex = ST_DEADFACE;
-	    st_facecount = 1;
-	}
+		// doomguy is dead
+		if (!plyr->health)
+		{
+			priority = 9;
+			st_facecount = 1; // show the dead face immediately
+			st_faceindex = ST_DEADFACE;
+		}
     }
 
     if (priority < 9)
     {
-	if (plyr->bonuscount)
-	{
-	    // picking up bonus
-	    doevilgrin = false;
+		// picking up bonus
 
-	    for (i=0;i<NUMWEAPONS;i++)
-	    {
-		if (oldweaponsowned[i] != plyr->weaponowned[i])
+		// this is the source of the "Player face grins after restoring save file" bug (see https://doomwiki.org/wiki/Player_face_grins_after_restoring_save_file)
+		// the bonuscount field is initially set to zero upon creation of the player thing (see P_SpawnPlayer in p_mobj.c)
+		// bonuscount can be assigned a nonzero value by picking up almost any beneficial object (see the function P_TouchSpecialThing in p_inter.c)
+		if (plyr->bonuscount)
 		{
-		    doevilgrin = true;
-		    oldweaponsowned[i] = plyr->weaponowned[i];
+			doevilgrin = false;
+
+			for (i = 0; i < NUMWEAPONS; i++)
+			{
+				// because the variable oldweaponsowned is local to st_stuff.c, its value cannot be recorded in the savefile, so it contains uninitialized "junk" values the first time the above conditional statement is executed. Therefore, the test is virtually guaranteed to return TRUE and produce a grinning face in that instance.
+				// this bug can also manifest itself when the idkfa or idfa cheat code is invoked, because the cheats give weapons to the player by directly updating plyr->weaponowned, bypassing the status bar face completely (see the function ST_Responder in st_stuff.c)
+				if (oldweaponsowned[i] != plyr->weaponowned[i])
+				{
+					doevilgrin = true;
+					oldweaponsowned[i] = plyr->weaponowned[i];
+				}
+			}
+
+			// show evil grin if just picked up weapon
+			if (doevilgrin) 
+			{
+				
+				priority = 8;
+				st_facecount = ST_EVILGRINCOUNT; // wait a few tics before showing the grin
+				st_faceindex = ST_calcPainOffset() + ST_EVILGRINOFFSET; // the face shown depends on doomguy's health
+				
+			}
 		}
-	    }
-	    if (doevilgrin) 
-	    {
-		// evil grin if just picked up weapon
-		priority = 8;
-		st_facecount = ST_EVILGRINCOUNT;
-		st_faceindex = ST_calcPainOffset() + ST_EVILGRINOFFSET;
-	    }
-	}
 
     }
   
     if (priority < 8)
     {
-	if (plyr->damagecount
-	    && plyr->attacker
-	    && plyr->attacker != plyr->mo)
-	{
-	    // being attacked
-	    priority = 7;
-	    
-	    if (plyr->health - st_oldhealth > ST_MUCHPAIN)
-	    {
-		st_facecount = ST_TURNCOUNT;
-		st_faceindex = ST_calcPainOffset() + ST_OUCHOFFSET;
-	    }
-	    else
-	    {
-		badguyangle = R_PointToAngle2(plyr->mo->x,
-					      plyr->mo->y,
-					      plyr->attacker->x,
-					      plyr->attacker->y);
-		
-		if (badguyangle > plyr->mo->angle)
+		// doomguy is being attacked
+		if (plyr->damagecount
+			&& plyr->attacker
+			&& plyr->attacker != plyr->mo)
 		{
-		    // whether right or left
-		    diffang = badguyangle - plyr->mo->angle;
-		    i = diffang > ANG180; 
-		}
-		else
-		{
-		    // whether left or right
-		    diffang = plyr->mo->angle - badguyangle;
-		    i = diffang <= ANG180; 
-		} // confusing, aint it?
+			
+			priority = 7;
+			
+			// this is where the "Ouch face" bug lives.
+			// the issue is that the ouch face will only appear if the player's current health is more than 20 points greater than their health in the previous tic (the developers probably meant the opposite: if the player loses more than 20 health, show the ouch face)
+			// since this portion of code is only called when the player receives damage, it is very unusual through normal play for a player receiving damage to end up with a great deal more health than he started with.
+			// (see https://doomwiki.org/wiki/Ouch_face)
+			if (plyr->health - st_oldhealth > ST_MUCHPAIN) // ST_MUCHPAIN is a constant set to 20 by default
+			{
+				st_facecount = ST_TURNCOUNT; // wait a few tics before showing the grin
+				st_faceindex = ST_calcPainOffset() + ST_OUCHOFFSET; // the face shown depends on doomguy's health
+			}
+			else
+			{
+				// determine the angle of the attacker from the point of view of doomguy
+				badguyangle = R_PointToAngle2(plyr->mo->x,
+								plyr->mo->y,
+								plyr->attacker->x,
+								plyr->attacker->y);
+				
+				// determine if the damage came from the left or the right
+				if (badguyangle > plyr->mo->angle)
+				{
+					diffang = badguyangle - plyr->mo->angle;
+					i = diffang > ANG180; 
+				}
+				else
+				{
+					
+					diffang = plyr->mo->angle - badguyangle;
+					i = diffang <= ANG180; 
+				} // confusing, aint it?
 
-		
-		st_facecount = ST_TURNCOUNT;
-		st_faceindex = ST_calcPainOffset();
-		
-		if (diffang < ANG45)
-		{
-		    // head-on    
-		    st_faceindex += ST_RAMPAGEOFFSET;
+				
+				st_facecount = ST_TURNCOUNT; // wait a little bit before showing the face
+				st_faceindex = ST_calcPainOffset(); // pain face depends on doomguy's health
+				
+				if (diffang < ANG45)
+				{
+					// monster is in front of doomguy  
+					st_faceindex += ST_RAMPAGEOFFSET;
+				}
+				else if (i)
+				{
+					// turn face right
+					st_faceindex += ST_TURNOFFSET;
+				}
+				else
+				{
+					// turn face left
+					st_faceindex += ST_TURNOFFSET+1;
+				}
+			}
 		}
-		else if (i)
-		{
-		    // turn face right
-		    st_faceindex += ST_TURNOFFSET;
-		}
-		else
-		{
-		    // turn face left
-		    st_faceindex += ST_TURNOFFSET+1;
-		}
-	    }
-	}
     }
   
     if (priority < 7)
     {
-	// getting hurt because of your own damn stupidity
-	if (plyr->damagecount)
-	{
-	    if (plyr->health - st_oldhealth > ST_MUCHPAIN)
-	    {
-		priority = 7;
-		st_facecount = ST_TURNCOUNT;
-		st_faceindex = ST_calcPainOffset() + ST_OUCHOFFSET;
-	    }
-	    else
-	    {
-		priority = 6;
-		st_facecount = ST_TURNCOUNT;
-		st_faceindex = ST_calcPainOffset() + ST_RAMPAGEOFFSET;
-	    }
-
-	}
-
+		// getting hurt because of your own damn stupidity
+		if (plyr->damagecount)
+		{
+			// see notes above about the ouch face
+			if (plyr->health - st_oldhealth > ST_MUCHPAIN)
+			{
+				priority = 7;
+				st_facecount = ST_TURNCOUNT; // wait a little bit before showing the face
+				st_faceindex = ST_calcPainOffset() + ST_OUCHOFFSET; // the face shown depends on doomguy's health
+			}
+			else
+			{
+				priority = 6;
+				st_facecount = ST_TURNCOUNT;
+				st_faceindex = ST_calcPainOffset() + ST_RAMPAGEOFFSET; // the face shown depends on doomguy's health
+			}
+		}
     }
   
     if (priority < 6)
     {
-	// rapid firing
-	if (plyr->attackdown)
-	{
-	    if (lastattackdown==-1)
-		lastattackdown = ST_RAMPAGEDELAY;
-	    else if (!--lastattackdown)
-	    {
-		priority = 5;
-		st_faceindex = ST_calcPainOffset() + ST_RAMPAGEOFFSET;
-		st_facecount = 1;
-		lastattackdown = 1;
-	    }
-	}
-	else
-	    lastattackdown = -1;
+		// rapid firing
+		if (plyr->attackdown)
+		{
+			if (lastattackdown==-1)
+				lastattackdown = ST_RAMPAGEDELAY;
+			else if (!--lastattackdown)
+			{
+				priority = 5;
+				st_facecount = 1; // show the rampage face immediately
+				st_faceindex = ST_calcPainOffset() + ST_RAMPAGEOFFSET; // the face shown depends on doomguy's health
+				lastattackdown = 1;
+			}
+		}
+		else
+			lastattackdown = -1;
 
     }
   
     if (priority < 5)
     {
-	// invulnerability
-	if ((plyr->cheats & CF_GODMODE)
-	    || plyr->powers[pw_invulnerability])
-	{
-	    priority = 4;
+		// invulnerability
+		if ((plyr->cheats & CF_GODMODE)
+			|| plyr->powers[pw_invulnerability])
+		{
+			priority = 4;
 
-	    st_faceindex = ST_GODFACE;
-	    st_facecount = 1;
+			st_facecount = 1; // show the god face immediately
+			st_faceindex = ST_GODFACE;
 
-	}
+		}
 
     }
 
+	// nothing special happened...
     // look left or look right if the facecount has timed out
     if (!st_facecount)
     {
-	st_faceindex = ST_calcPainOffset() + (st_randomnumber % 3);
-	st_facecount = ST_STRAIGHTFACECOUNT;
-	priority = 0;
+		st_facecount = ST_STRAIGHTFACECOUNT;
+		st_faceindex = ST_calcPainOffset() + (st_randomnumber % 3); // doomguy turns his face to the sides and keeps it straight at random
+		priority = 0;
     }
 
     st_facecount--;
@@ -1075,12 +1093,13 @@ void ST_drawWidgets(boolean refresh)
     STlib_updateBinIcon(&w_armsbg, refresh);
 
     for (i=0;i<6;i++)
-	STlib_updateMultIcon(&w_arms[i], refresh);
+		STlib_updateMultIcon(&w_arms[i], refresh);
 
+	// this is where doomguy's face changes
     STlib_updateMultIcon(&w_faces, refresh);
 
     for (i=0;i<3;i++)
-	STlib_updateMultIcon(&w_keyboxes[i], refresh);
+		STlib_updateMultIcon(&w_keyboxes[i], refresh);
 
     STlib_updateNum(&w_frags, refresh);
 

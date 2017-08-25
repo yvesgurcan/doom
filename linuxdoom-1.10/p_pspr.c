@@ -731,22 +731,26 @@ A_FireShotgun2
 //
 void
 A_FireCGun
-( player_t*	player,
-  pspdef_t*	psp ) 
+(player_t* player,
+  pspdef_t* psp) 
 {
+    // this is where the 'Chaingun makes two sounds firing single bullet' bug originates (see https://doomwiki.org/wiki/Chaingun_makes_two_sounds_firing_single_bullet)
+    // because the function starts the sound without checking if there is enough ammo first, the chaingun sounds like it fires twice even if there is only one bullet left in the player's inventory
     S_StartSound (player->mo, sfx_pistol);
 
     if (!player->ammo[weaponinfo[player->readyweapon].ammo])
-	return;
+	    return;
 		
     P_SetMobjState (player->mo, S_PLAY_ATK2);
     player->ammo[weaponinfo[player->readyweapon].ammo]--;
 
-    P_SetPsprite (player,
-		  ps_flash,
-		  weaponinfo[player->readyweapon].flashstate
-		  + psp->state
-		  - &states[S_CHAIN1] );
+    P_SetPsprite (
+        player,
+        ps_flash,
+        weaponinfo[player->readyweapon].flashstate
+        + psp->state
+        - &states[S_CHAIN1]
+    );
 
     P_BulletSlope (player->mo);
 	
