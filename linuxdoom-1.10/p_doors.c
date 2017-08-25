@@ -52,7 +52,6 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 };
 #endif
 
-
 //
 // VERTICAL DOORS
 //
@@ -62,138 +61,152 @@ slidename_t	slideFrameNames[MAXSLIDEDOORS] =
 //
 void T_VerticalDoor (vldoor_t* door)
 {
-    result_e	res;
+    result_e res;
 	
     switch(door->direction)
     {
-      case 0:
-	// WAITING
-	if (!--door->topcountdown)
-	{
-	    switch(door->type)
-	    {
-	      case blazeRaise:
-		door->direction = -1; // time to go back down
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_bdcls);
-		break;
+      	case 0:
+			// WAITING
+			if (!--door->topcountdown)
+			{
+				switch(door->type)
+				{
+					// fast door
+					case blazeRaise:
+						door->direction = -1; // time to go back down
+						S_StartSound((mobj_t *)&door->sector->soundorg,
+								sfx_bdcls);
+						break;
+					
+					// regular door
+					case normal:
+						door->direction = -1; // time to go back down
+						S_StartSound((mobj_t *)&door->sector->soundorg,
+								sfx_dorcls);
+						break;
+
+					// special door that opens after 30 seconds
+					case close30ThenOpen:
+						door->direction = 1;
+						S_StartSound((mobj_t *)&door->sector->soundorg,
+								sfx_doropn);
+						break;
+					
+					default:
+						break;
+				}
+			}
+			break;
 		
-	      case normal:
-		door->direction = -1; // time to go back down
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_dorcls);
-		break;
+		case 2:
+			//  INITIAL WAIT
+			if (!--door->topcountdown)
+			{
+				switch(door->type)
+				{
+					// special door that opens after 5 minutes
+					case raiseIn5Mins:
+						door->direction = 1;
+						door->type = normal;
+						S_StartSound((mobj_t *)&door->sector->soundorg,
+								sfx_doropn);
+						break;
+					
+					default:
+						break;
+				}
+			}
+			break;
 		
-	      case close30ThenOpen:
-		door->direction = 1;
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_doropn);
-		break;
+		case -1:
+			// DOWN
+			res = T_MovePlane(door->sector,
+					door->speed,
+					door->sector->floorheight,
+					false,1,door->direction);
+			
+			if (res == pastdest)
+			{
+				switch(door->type)
+				{
+					// fast door
+					case blazeRaise:
+					case blazeClose:
+						door->sector->specialdata = NULL;
+						P_RemoveThinker (&door->thinker);  // unlink and free
+						S_StartSound((mobj_t *)&door->sector->soundorg,
+								sfx_bdcls);
+						break;
+				
+					// normal door
+					case normal:
+					case close:
+						door->sector->specialdata = NULL;
+						P_RemoveThinker (&door->thinker);  // unlink and free
+						break;
+					
+					// special door that opens after 30 seconds
+					case close30ThenOpen:
+						door->direction = 0;
+						door->topcountdown = 35*30;
+						break;
+				
+					default:
+						break;
+				}
+			}
+			
+			// not sure where crushed gets defined...
+			else if (res == crushed)
+			{
+				switch(door->type)
+				{
+					// fast and normal door
+					// already closed
+					case blazeClose:
+					case close:
+						break;
+					
+					// this is where the "Fast doors reopening with wrong sound" bug happens (see https://doomwiki.org/wiki/Fast_doors_reopening_with_wrong_sound)
+					// the type of the door is not checked here, so the same door open sound plays, regardless of the type of the door
+					default:
+						door->direction = 1;
+						S_StartSound((mobj_t *)&door->sector->soundorg,
+								sfx_doropn);
+						break;
+				}
+			}
+			break;
 		
-	      default:
-		break;
-	    }
-	}
-	break;
-	
-      case 2:
-	//  INITIAL WAIT
-	if (!--door->topcountdown)
-	{
-	    switch(door->type)
-	    {
-	      case raiseIn5Mins:
-		door->direction = 1;
-		door->type = normal;
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_doropn);
-		break;
-		
-	      default:
-		break;
-	    }
-	}
-	break;
-	
-      case -1:
-	// DOWN
-	res = T_MovePlane(door->sector,
-			  door->speed,
-			  door->sector->floorheight,
-			  false,1,door->direction);
-	if (res == pastdest)
-	{
-	    switch(door->type)
-	    {
-	      case blazeRaise:
-	      case blazeClose:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_bdcls);
-		break;
-		
-	      case normal:
-	      case close:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
-		break;
-		
-	      case close30ThenOpen:
-		door->direction = 0;
-		door->topcountdown = 35*30;
-		break;
-		
-	      default:
-		break;
-	    }
-	}
-	else if (res == crushed)
-	{
-	    switch(door->type)
-	    {
-	      case blazeClose:
-	      case close:		// DO NOT GO BACK UP!
-		break;
-		
-	      default:
-		door->direction = 1;
-		S_StartSound((mobj_t *)&door->sector->soundorg,
-			     sfx_doropn);
-		break;
-	    }
-	}
-	break;
-	
-      case 1:
-	// UP
-	res = T_MovePlane(door->sector,
-			  door->speed,
-			  door->topheight,
-			  false,1,door->direction);
-	
-	if (res == pastdest)
-	{
-	    switch(door->type)
-	    {
-	      case blazeRaise:
-	      case normal:
-		door->direction = 0; // wait at top
-		door->topcountdown = door->topwait;
-		break;
-		
-	      case close30ThenOpen:
-	      case blazeOpen:
-	      case open:
-		door->sector->specialdata = NULL;
-		P_RemoveThinker (&door->thinker);  // unlink and free
-		break;
-		
-	      default:
-		break;
-	    }
-	}
-	break;
+		case 1:
+			// UP
+			res = T_MovePlane(door->sector,
+					door->speed,
+					door->topheight,
+					false,1,door->direction);
+			
+			if (res == pastdest)
+			{
+				switch(door->type)
+				{
+					case blazeRaise:
+					case normal:
+						door->direction = 0; // wait at top
+						door->topcountdown = door->topwait;
+						break;
+						
+					case close30ThenOpen:
+					case blazeOpen:
+					case open:
+						door->sector->specialdata = NULL;
+						P_RemoveThinker (&door->thinker);  // unlink and free
+						break;
+					
+					default:
+						break;
+				}
+			}
+			break;
     }
 }
 
