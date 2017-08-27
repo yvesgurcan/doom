@@ -1886,12 +1886,14 @@ void A_BrainPain (mobj_t*	mo)
 
 void A_BrainScream (mobj_t*	mo)
 {
-    int		x;
-    int		y;
-    int		z;
-    mobj_t*	th;
-	
-    for (x=mo->x - 196*FRACUNIT ; x< mo->x + 320*FRACUNIT ; x+= FRACUNIT*8)
+    int x;
+    int y;
+    int z;
+    mobj_t* th;
+    
+    // creates random explosions at coordinates relative to the Romero head
+    // the -196 to +320 range makes the area where the explosions appear to not be centered around the head, but to be slightly lopsided (about 62 units)
+    for (x = mo->x - 196*FRACUNIT; x < mo->x + 320*FRACUNIT; x += FRACUNIT*8)
     {
         y = mo->y - 320*FRACUNIT;
         z = 128 + P_Random()*2*FRACUNIT;

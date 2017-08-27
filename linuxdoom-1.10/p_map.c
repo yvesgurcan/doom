@@ -313,13 +313,8 @@ boolean PIT_CheckThing (mobj_t* thing)
 
             if (thing->type != MT_PLAYER)
             {
-<<<<<<< HEAD
-                // Explode, but do no damage.
-                // Let players missile other players.
-=======
                 // explode, but do no damage.
                 // let players missile other players.
->>>>>>> c8ef77023b53680f6e04ccc88cfc91416faab857
                 return false;
             }
         }

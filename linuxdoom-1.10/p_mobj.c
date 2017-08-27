@@ -707,69 +707,71 @@ void P_SpawnPlayer (mapthing_t* mthing)
 //
 void P_SpawnMapThing (mapthing_t* mthing)
 {
-    int			i;
-    int			bit;
-    mobj_t*		mobj;
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
+    int i;
+    int bit;
+    mobj_t* mobj;
+    fixed_t x;
+    fixed_t y;
+    fixed_t z;
 		
     // count deathmatch start positions
     if (mthing->type == 11)
     {
-	if (deathmatch_p < &deathmatchstarts[10])
-	{
-	    memcpy (deathmatch_p, mthing, sizeof(*mthing));
-	    deathmatch_p++;
-	}
-	return;
+        if (deathmatch_p < &deathmatchstarts[10])
+        {
+            memcpy (deathmatch_p, mthing, sizeof(*mthing));
+            deathmatch_p++;
+        }
+        return;
     }
 	
     // check for players specially
     if (mthing->type <= 4)
     {
-	// save spots for respawning in network games
-	playerstarts[mthing->type-1] = *mthing;
-	if (!deathmatch)
-	    P_SpawnPlayer (mthing);
+        // save spots for respawning in network games
+        playerstarts[mthing->type-1] = *mthing;
+        if (!deathmatch)
+            P_SpawnPlayer (mthing);
 
-	return;
+        return;
     }
 
     // check for apropriate skill level
-    if (!netgame && (mthing->options & 16) )
-	return;
+    if (!netgame && (mthing->options & 16))
+	    return;
 		
     if (gameskill == sk_baby)
-	bit = 1;
+    	bit = 1;
     else if (gameskill == sk_nightmare)
-	bit = 4;
+	    bit = 4;
     else
-	bit = 1<<(gameskill-1);
+	    bit = 1 << (gameskill - 1);
 
-    if (!(mthing->options & bit) )
-	return;
+    if (!(mthing->options & bit))
+	    return;
 	
     // find which type to spawn
-    for (i=0 ; i< NUMMOBJTYPES ; i++)
-	if (mthing->type == mobjinfo[i].doomednum)
-	    break;
+    for (i = 0; i < NUMMOBJTYPES; i++)
+        if (mthing->type == mobjinfo[i].doomednum)
+            break;
 	
-    if (i==NUMMOBJTYPES)
+    if (i == NUMMOBJTYPES)
 	I_Error ("P_SpawnMapThing: Unknown type %i at (%i, %i)",
 		 mthing->type,
 		 mthing->x, mthing->y);
 		
     // don't spawn keycards and players in deathmatch
     if (deathmatch && mobjinfo[i].flags & MF_NOTDMATCH)
-	return;
+	    return;
 		
-    // don't spawn any monsters if -nomonsters
-    if (nomonsters
-	&& ( i == MT_SKULL
-	     || (mobjinfo[i].flags & MF_COUNTKILL)) )
+    // don't spawn any monster if -nomonsters
+    // below, the MF_COUNTKILL flag is used to differentiate monsters from other things, in order to prevent them from spawning if the game was given the -nomonsters argument
+    // in Doom II, lost souls do not have this flag
+    // as a consequence, the hack below is necessary to prevent lost souls from spwaning with -nomonsters
+    // also, lost souls are not counted towards the total of enemies killed
+    if (nomonsters && (i == MT_SKULL || (mobjinfo[i].flags & MF_COUNTKILL)))
     {
-	return;
+    	return;
     }
     
     // spawn it
@@ -777,26 +779,24 @@ void P_SpawnMapThing (mapthing_t* mthing)
     y = mthing->y << FRACBITS;
 
     if (mobjinfo[i].flags & MF_SPAWNCEILING)
-	z = ONCEILINGZ;
+	    z = ONCEILINGZ;
     else
-	z = ONFLOORZ;
+	    z = ONFLOORZ;
     
     mobj = P_SpawnMobj (x,y,z, i);
     mobj->spawnpoint = *mthing;
 
     if (mobj->tics > 0)
-	mobj->tics = 1 + (P_Random () % mobj->tics);
+	    mobj->tics = 1 + (P_Random () % mobj->tics);
     if (mobj->flags & MF_COUNTKILL)
-	totalkills++;
+	    totalkills++;
     if (mobj->flags & MF_COUNTITEM)
-	totalitems++;
+	    totalitems++;
 		
     mobj->angle = ANG45 * (mthing->angle/45);
     if (mthing->options & MTF_AMBUSH)
-	mobj->flags |= MF_AMBUSH;
+	    mobj->flags |= MF_AMBUSH;
 }
-
-
 
 //
 // GAME SPAWN FUNCTIONS
