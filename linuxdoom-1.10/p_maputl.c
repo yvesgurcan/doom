@@ -469,10 +469,7 @@ P_SetThingPosition (mobj_t* thing)
 // to it.
 //
 boolean
-P_BlockLinesIterator
-( int			x,
-  int			y,
-  boolean(*func)(line_t*) )
+P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*))
 {
     int			offset;
     short*		list;

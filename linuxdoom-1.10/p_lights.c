@@ -338,7 +338,7 @@ void T_Glow(glow_t*	g)
 }
 
 
-void P_SpawnGlowingLight(sector_t*	sector)
+void P_SpawnGlowingLight(sector_t* sector)
 {
     glow_t*	g;
 	
