@@ -468,38 +468,38 @@ P_SetThingPosition (mobj_t* thing)
 // to P_BlockLinesIterator, then make one or more calls
 // to it.
 //
-boolean
-P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*))
+// This function, apparently, is called every time the player fires.
+//
+boolean P_BlockLinesIterator (int x, int y, boolean(*func)(line_t*))
 {
-    int			offset;
-    short*		list;
-    line_t*		ld;
+    int offset;
+    short* list;
+    line_t* ld;
 	
-    if (x<0
-	|| y<0
-	|| x>=bmapwidth
-	|| y>=bmapheight)
+    if (x < 0 || y < 0 || x >= bmapwidth || y >= bmapheight)
     {
-	return true;
+    	return true;
     }
     
-    offset = y*bmapwidth+x;
+    offset = y * bmapwidth + x;
 	
-    offset = *(blockmap+offset);
+    offset = *(blockmap + offset);
 
-    for ( list = blockmaplump+offset ; *list != -1 ; list++)
+    // each element on the list is the number of a linedef
+    // blockmaplump + offset starts at zero
+    for (list = blockmaplump + offset; *list != -1; list++)
     {
-	ld = &lines[*list];
+        ld = &lines[*list];
 
-	if (ld->validcount == validcount)
-	    continue; 	// line has already been checked
+        if (ld->validcount == validcount)
+            continue; // line has already been checked
 
-	ld->validcount = validcount;
-		
-	if ( !func(ld) )
-	    return false;
+        ld->validcount = validcount;
+            
+        if (!func(ld))
+            return false;
     }
-    return true;	// everything was checked
+    return true; // everything was checked
 }
 
 
