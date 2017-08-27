@@ -1160,7 +1160,7 @@ void ST_loadGraphics(void)
     }
 
     // Load percent key.
-    //Note: why not load STMINUS here, too?
+    // Note: why not load STMINUS here, too?
     tallpercent = (patch_t *) W_CacheLumpName("STTPRCNT", PU_STATIC);
 
     // key cards
