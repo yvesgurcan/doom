@@ -843,69 +843,69 @@ PTR_AimTraverse (intercept_t* in)
 		
     if (in->isaline)
     {
-	li = in->d.line;
-	
-	if ( !(li->flags & ML_TWOSIDED) )
-	    return false;		// stop
-	
-	// Crosses a two sided line.
-	// A two sided line will restrict
-	// the possible target ranges.
-	P_LineOpening (li);
-	
-	if (openbottom >= opentop)
-	    return false;		// stop
-	
-	dist = FixedMul (attackrange, in->frac);
+        li = in->d.line;
+        
+        if ( !(li->flags & ML_TWOSIDED) )
+            return false;		// stop
+        
+        // Crosses a two sided line.
+        // A two sided line will restrict
+        // the possible target ranges.
+        P_LineOpening (li);
+        
+        if (openbottom >= opentop)
+            return false;		// stop
+        
+        dist = FixedMul(attackrange, in->frac);
 
-	if (li->frontsector->floorheight != li->backsector->floorheight)
-	{
-	    slope = FixedDiv (openbottom - shootz , dist);
-	    if (slope > bottomslope)
-		bottomslope = slope;
-	}
-		
-	if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
-	{
-	    slope = FixedDiv (opentop - shootz , dist);
-	    if (slope < topslope)
-		topslope = slope;
-	}
-		
-	if (topslope <= bottomslope)
-	    return false;		// stop
-			
-	return true;			// shot continues
+        if (li->frontsector->floorheight != li->backsector->floorheight)
+        {
+            slope = FixedDiv(openbottom - shootz , dist);
+            if (slope > bottomslope)
+            bottomslope = slope;
+        }
+            
+        if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
+        {
+            slope = FixedDiv (opentop - shootz , dist);
+            if (slope < topslope)
+            topslope = slope;
+        }
+            
+        if (topslope <= bottomslope)
+            return false;		// stop
+                
+        return true;			// shot continues
     }
     
     // shoot a thing
     th = in->d.thing;
     if (th == shootthing)
-	return true;			// can't shoot self
+	    return true;			// can't shoot self
     
     if (!(th->flags&MF_SHOOTABLE))
-	return true;			// corpse or something
+	    return true;			// corpse or something
 
     // check angles to see if the thing can be aimed at
     dist = FixedMul (attackrange, in->frac);
     thingtopslope = FixedDiv (th->z+th->height - shootz , dist);
 
     if (thingtopslope < bottomslope)
-	return true;			// shot over the thing
+    	return true;			// shot over the thing
 
     thingbottomslope = FixedDiv (th->z - shootz, dist);
 
     if (thingbottomslope > topslope)
-	return true;			// shot under the thing
+	    return true;			// shot under the thing
     
     // this thing can be hit!
     if (thingtopslope > topslope)
 	    thingtopslope = topslope;
     
     if (thingbottomslope < bottomslope)
-	thingbottomslope = bottomslope;
+	    thingbottomslope = bottomslope;
 
-    aimslope = (thingtopslope+thingbottomslope)/2;
+    aimslope = (thingtopslope + thingbottomslope) / 2;
     linetarget = th;
 
     return false; // don't go any farther
@@ -933,109 +933,107 @@ boolean PTR_ShootTraverse (intercept_t* in)
 		
     if (in->isaline)
     {
-	li = in->d.line;
-	
-	if (li->special)
-	    P_ShootSpecialLine (shootthing, li);
+        li = in->d.line;
+        
+        // check for line trigger?
+        if (li->special)
+            P_ShootSpecialLine(shootthing, li);
 
-	if ( !(li->flags & ML_TWOSIDED) )
-	    goto hitline;
-	
-	// crosses a two sided line
-	P_LineOpening (li);
-		
-	dist = FixedMul (attackrange, in->frac);
+        if ( !(li->flags & ML_TWOSIDED) )
+            goto hitline;
+        
+        // crosses a two sided line
+        P_LineOpening(li);
+            
+        dist = FixedMul(attackrange, in->frac);
 
-	if (li->frontsector->floorheight != li->backsector->floorheight)
-	{
-	    slope = FixedDiv (openbottom - shootz , dist);
-	    if (slope > aimslope)
-		goto hitline;
-	}
-		
-	if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
-	{
-	    slope = FixedDiv (opentop - shootz , dist);
-	    if (slope < aimslope)
-		goto hitline;
-	}
+        if (li->frontsector->floorheight != li->backsector->floorheight)
+        {
+            slope = FixedDiv(openbottom - shootz , dist);
+            if (slope > aimslope)
+                goto hitline;
+        }
+            
+        if (li->frontsector->ceilingheight != li->backsector->ceilingheight)
+        {
+            slope = FixedDiv (opentop - shootz , dist);
+            if (slope < aimslope)
+                goto hitline;
+        }
 
-	// shot continues
-	return true;
-	
-	
-	// hit line
-      hitline:
-	// position a bit closer
-	frac = in->frac - FixedDiv (4*FRACUNIT,attackrange);
-	x = trace.x + FixedMul (trace.dx, frac);
-	y = trace.y + FixedMul (trace.dy, frac);
-	z = shootz + FixedMul (aimslope, FixedMul(frac, attackrange));
+        // shot continues
+        return true;
+        
+        // hit line
+        hitline:
+            // position a bit closer
+            frac = in->frac - FixedDiv(4 * FRACUNIT, attackrange);
+            x = trace.x + FixedMul(trace.dx, frac);
+            y = trace.y + FixedMul(trace.dy, frac);
+            z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
-	if (li->frontsector->ceilingpic == skyflatnum)
-	{
-	    // don't shoot the sky!
-	    if (z > li->frontsector->ceilingheight)
-		    return false;
-	    
-	    // it's a sky hack wall
-        // the code below is the source of the 'Bullet puffs do not appear in outdoor areas' bug. (see https://doomwiki.org/wiki/Bullet_puffs_do_not_appear_in_outdoor_areas)
-        // because there is no check here to see if the player has hit the upper texture, the bullets will disappear when the player shots at the lower texture
-	    if	(li->backsector && li->backsector->ceilingpic == skyflatnum)
-		    return false;		
-	}
+            if (li->frontsector->ceilingpic == skyflatnum)
+            {
+                // don't shoot the sky!
+                if (z > li->frontsector->ceilingheight)
+                    return false;
+                
+                // it's a sky hack wall
+                // the code below is the source of the 'Bullet puffs do not appear in outdoor areas' bug. (see https://doomwiki.org/wiki/Bullet_puffs_do_not_appear_in_outdoor_areas)
+                // because there is no check here to see if the player has hit the upper texture, the bullets will also disappear when the player shoots the lower texture
+                if	(li->backsector && li->backsector->ceilingpic == skyflatnum)
+                    return false;		
+            }
 
-	// Spawn bullet puffs.
-	P_SpawnPuff (x,y,z);
-	
-	// don't go any farther
-	return false;	
+            // Spawn bullet puffs.
+            P_SpawnPuff (x,y,z);
+            
+            // don't go any farther
+            return false;
     }
     
     // shoot a thing
     th = in->d.thing;
     if (th == shootthing)
-	return true;		// can't shoot self
+	    return true;		// can't shoot self
     
     if (!(th->flags&MF_SHOOTABLE))
-	return true;		// corpse or something
+	    return true;		// corpse or something
 		
     // check angles to see if the thing can be aimed at
-    dist = FixedMul (attackrange, in->frac);
-    thingtopslope = FixedDiv (th->z+th->height - shootz , dist);
+    dist = FixedMul(attackrange, in->frac);
+    thingtopslope = FixedDiv(th->z+th->height - shootz , dist);
 
     if (thingtopslope < aimslope)
-	return true;		// shot over the thing
+	    return true;		// shot over the thing
 
     thingbottomslope = FixedDiv (th->z - shootz, dist);
 
     if (thingbottomslope > aimslope)
-	return true;		// shot under the thing
+	    return true;		// shot under the thing
 
-    
     // hit thing
     // position a bit closer
-    frac = in->frac - FixedDiv (10*FRACUNIT,attackrange);
+    frac = in->frac - FixedDiv(10 * FRACUNIT,attackrange);
 
-    x = trace.x + FixedMul (trace.dx, frac);
-    y = trace.y + FixedMul (trace.dy, frac);
-    z = shootz + FixedMul (aimslope, FixedMul(frac, attackrange));
+    x = trace.x + FixedMul(trace.dx, frac);
+    y = trace.y + FixedMul(trace.dy, frac);
+    z = shootz + FixedMul(aimslope, FixedMul(frac, attackrange));
 
     // Spawn bullet puffs or blod spots,
     // depending on target type.
     if (in->d.thing->flags & MF_NOBLOOD)
-	P_SpawnPuff (x,y,z);
+    	P_SpawnPuff (x,y,z);
     else
-	P_SpawnBlood (x,y,z, la_damage);
+	    P_SpawnBlood (x,y,z, la_damage);
 
     if (la_damage)
-	P_DamageMobj (th, shootthing, shootthing, la_damage);
+	    P_DamageMobj (th, shootthing, shootthing, la_damage);
 
     // don't go any farther
     return false;
 	
 }
-
 
 //
 // P_AimLineAttack
@@ -1063,18 +1061,21 @@ P_AimLineAttack
     attackrange = distance;
     linetarget = NULL;
 	
-    P_PathTraverse ( t1->x, t1->y,
-		     x2, y2,
-		     PT_ADDLINES|PT_ADDTHINGS,
-		     PTR_AimTraverse );
+    P_PathTraverse(
+        t1->x,
+        t1->y,
+        x2,
+        y2,
+		PT_ADDLINES|PT_ADDTHINGS,
+        PTR_AimTraverse
+    );
 		
     if (linetarget)
-	return aimslope;
+	    return aimslope;
 
     return 0;
 }
  
-
 //
 // P_LineAttack
 // If damage == 0, it is just a test trace
@@ -1100,13 +1101,15 @@ P_LineAttack
     attackrange = distance;
     aimslope = slope;
 		
-    P_PathTraverse ( t1->x, t1->y,
-		     x2, y2,
-		     PT_ADDLINES|PT_ADDTHINGS,
-		     PTR_ShootTraverse );
+    P_PathTraverse(
+        t1->x,
+        t1->y,
+        x2,
+        y2,
+		PT_ADDLINES|PT_ADDTHINGS,
+        PTR_ShootTraverse
+    );
 }
- 
-
 
 //
 // USE LINES
@@ -1119,30 +1122,29 @@ boolean	PTR_UseTraverse (intercept_t* in)
 	
     if (!in->d.line->special)
     {
-	P_LineOpening (in->d.line);
-	if (openrange <= 0)
-	{
-	    S_StartSound (usething, sfx_noway);
-	    
-	    // can't use through a wall
-	    return false;	
-	}
-	// not a special line, but keep checking
-	return true ;		
+        P_LineOpening(in->d.line);
+        if (openrange <= 0)
+        {
+            S_StartSound (usething, sfx_noway);
+            
+            // can't use through a wall
+            return false;	
+        }
+        // not a special line, but keep checking
+        return true;		
     }
 	
     side = 0;
-    if (P_PointOnLineSide (usething->x, usething->y, in->d.line) == 1)
-	side = 1;
+    if (P_PointOnLineSide(usething->x, usething->y, in->d.line) == 1)
+	    side = 1;
     
     //	return false;		// don't use back side
 	
     P_UseSpecialLine (usething, in->d.line, side);
 
-    // can't use for than one special line in a row
+    // can't use for more than one special line in a row
     return false;
 }
-
 
 //
 // P_UseLines
@@ -1165,9 +1167,8 @@ void P_UseLines (player_t*	player)
     x2 = x1 + (USERANGE>>FRACBITS)*finecosine[angle];
     y2 = y1 + (USERANGE>>FRACBITS)*finesine[angle];
 	
-    P_PathTraverse ( x1, y1, x2, y2, PT_ADDLINES, PTR_UseTraverse );
+    P_PathTraverse( x1, y1, x2, y2, PT_ADDLINES, PTR_UseTraverse);
 }
-
 
 //
 // RADIUS ATTACK
@@ -1175,7 +1176,6 @@ void P_UseLines (player_t*	player)
 mobj_t*		bombsource;
 mobj_t*		bombspot;
 int		bombdamage;
-
 
 //
 // PIT_RadiusAttack
@@ -1189,13 +1189,12 @@ boolean PIT_RadiusAttack (mobj_t* thing)
     fixed_t	dist;
 	
     if (!(thing->flags & MF_SHOOTABLE) )
-	return true;
+	    return true;
 
-    // Boss spider and cyborg
-    // take no damage from concussion.
+    // Masterminds and Cyber Demons do not take radius damage
     if (thing->type == MT_CYBORG
 	|| thing->type == MT_SPIDER)
-	return true;	
+	    return true;	
 		
     dx = abs(thing->x - bombspot->x);
     dy = abs(thing->y - bombspot->y);
@@ -1204,15 +1203,16 @@ boolean PIT_RadiusAttack (mobj_t* thing)
     dist = (dist - thing->radius) >> FRACBITS;
 
     if (dist < 0)
-	dist = 0;
-
+        dist = 0;
+    
+    // out of range
     if (dist >= bombdamage)
-	return true;	// out of range
+	    return true;	
 
     if ( P_CheckSight (thing, bombspot) )
     {
-	// must be in direct path
-	P_DamageMobj (thing, bombspot, bombsource, bombdamage - dist);
+	    // must be in direct path
+    	P_DamageMobj (thing, bombspot, bombsource, bombdamage - dist);
     }
     
     return true;
@@ -1248,12 +1248,10 @@ P_RadiusAttack
     bombsource = source;
     bombdamage = damage;
 	
-    for (y=yl ; y<=yh ; y++)
-	for (x=xl ; x<=xh ; x++)
-	    P_BlockThingsIterator (x, y, PIT_RadiusAttack );
+    for (y = yl; y <= yh; y++)
+        for (x = xl; x <= xh; x++)
+            P_BlockThingsIterator(x, y, PIT_RadiusAttack);
 }
-
-
 
 //
 // SECTOR HEIGHT CHANGING
@@ -1264,13 +1262,12 @@ P_RadiusAttack
 // If anything doesn't fit anymore, true will be returned.
 // If crunch is true, they will take damage
 //  as they are being crushed.
-// If Crunch is false, you should set the sector height back
+// If crunch is false, you should set the sector height back
 //  the way it was and call P_ChangeSector again
 //  to undo the changes.
 //
 boolean		crushchange;
 boolean		nofit;
-
 
 //
 // PIT_ChangeSector
@@ -1285,7 +1282,6 @@ boolean PIT_ChangeSector (mobj_t*	thing)
         return true;
     }
     
-
     // crunch bodies to giblets
     if (thing->health <= 0)
     {
@@ -1296,7 +1292,7 @@ boolean PIT_ChangeSector (mobj_t*	thing)
         thing->height = 0;
         thing->radius = 0;
 
-        // for monsters that ares resurrected by the archvile from a pool of blood, height and radius do not get restored in the resurrection code
+        // the height of monsters turned into a pool of blood (which is equal to zero) does not get restored to the monsters' original height when they are resurrected by the archvile
         // see https://doomwiki.org/wiki/Ghost_monster for more details
 
         // keep checking
@@ -1306,38 +1302,36 @@ boolean PIT_ChangeSector (mobj_t*	thing)
     // crunch dropped items
     if (thing->flags & MF_DROPPED)
     {
-	P_RemoveMobj (thing);
-	
-	// keep checking
-	return true;		
+        P_RemoveMobj (thing);
+        
+        // keep checking
+        return true;		
     }
 
     if (! (thing->flags & MF_SHOOTABLE) )
     {
-	// assume it is bloody gibs or something
-	return true;			
+        // assume it is bloody gibs or something
+        return true;			
     }
     
     nofit = true;
 
     if (crushchange && !(leveltime&3) )
     {
-	P_DamageMobj(thing,NULL,NULL,10);
+        P_DamageMobj(thing,NULL,NULL,10);
 
-	// spray blood in a random direction
-	mo = P_SpawnMobj (thing->x,
-			  thing->y,
-			  thing->z + thing->height/2, MT_BLOOD);
-	
-	mo->momx = (P_Random() - P_Random ())<<12;
-	mo->momy = (P_Random() - P_Random ())<<12;
+        // spray blood in a random direction
+        mo = P_SpawnMobj (thing->x,
+                thing->y,
+                thing->z + thing->height/2, MT_BLOOD);
+        
+        mo->momx = (P_Random() - P_Random ())<<12;
+        mo->momy = (P_Random() - P_Random ())<<12;
     }
 
     // keep checking (crush other things)	
     return true;	
 }
-
-
 
 //
 // P_ChangeSector
@@ -1355,8 +1349,8 @@ P_ChangeSector
 	
     // re-check heights for all things near the moving sector
     for (x=sector->blockbox[BOXLEFT] ; x<= sector->blockbox[BOXRIGHT] ; x++)
-	for (y=sector->blockbox[BOXBOTTOM];y<= sector->blockbox[BOXTOP] ; y++)
-	    P_BlockThingsIterator (x, y, PIT_ChangeSector);
+        for (y=sector->blockbox[BOXBOTTOM];y<= sector->blockbox[BOXTOP] ; y++)
+            P_BlockThingsIterator (x, y, PIT_ChangeSector);
 	
 	
     return nofit;
